@@ -1,0 +1,99 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    overflow:hidden;
+    background:black;
+    font-family:Arial, Helvetica, sans-serif;
+
+}
+
+#universo{
+
+    width:100vw;
+    height:100vh;
+
+    background:
+    radial-gradient(circle at center,#091540,#000814,#000);
+
+    position:relative;
+
+}
+
+#mensaje{
+
+    position:absolute;
+
+    top:50%;
+    left:50%;
+
+    transform:translate(-50%,-50%);
+
+    color:white;
+
+    font-size:40px;
+
+    text-shadow:
+
+    0 0 10px pink,
+    0 0 20px hotpink,
+    0 0 40px red;
+
+    animation:
+
+    aparecer 3s;
+
+}
+
+@keyframes aparecer{
+
+0%{
+
+opacity:0;
+transform:translate(-50%,-60%);
+
+}
+
+100%{
+
+opacity:1;
+transform:translate(-50%,-50%);
+
+}
+
+}
+/* ESTRELLAS */
+
+.estrella{
+
+    position:absolute;
+
+    background:white;
+
+    border-radius:50%;
+
+    animation:parpadear infinite alternate;
+
+}
+
+@keyframes parpadear{
+
+    from{
+
+        opacity:.2;
+        transform:scale(.8);
+
+    }
+
+    to{
+
+        opacity:1;
+        transform:scale(1.4);
+
+    }
+
+}
