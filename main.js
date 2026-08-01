@@ -75,7 +75,7 @@ window.innerWidth/window.innerHeight,
 
 );
 
-camera.position.z = 90;
+camera.position.z = 70;
 
 //----------------------------
 
