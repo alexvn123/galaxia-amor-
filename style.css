@@ -1,233 +1,131 @@
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+
+margin:0;
+padding:0;
+box-sizing:border-box;
+
 }
 
 body{
 
-    overflow:hidden;
-    background:black;
-    font-family:Arial, Helvetica, sans-serif;
+overflow:hidden;
+
+background:black;
+
+font-family:Arial;
 
 }
 
-#universo{
+canvas{
 
-    width:100vw;
-    height:100vh;
+position:absolute;
 
-    background:
-    radial-gradient(circle at center,#091540,#000814,#000);
-
-    position:relative;
+top:0;
+left:0;
 
 }
 
-#mensaje{
+/*====================*/
 
-    position:absolute;
+#loader{
 
-    top:50%;
-    left:50%;
+position:absolute;
 
-    transform:translate(-50%,-50%);
+width:100%;
+height:100%;
 
-    color:white;
+display:flex;
 
-    font-size:40px;
+justify-content:center;
 
-    text-shadow:
+align-items:center;
 
-    0 0 10px pink,
-    0 0 20px hotpink,
-    0 0 40px red;
+flex-direction:column;
 
-    animation:
+background:black;
 
-    aparecer 3s;
+color:white;
 
-}
+z-index:100;
 
-@keyframes aparecer{
-
-0%{
-
-opacity:0;
-transform:translate(-50%,-60%);
+transition:1s;
 
 }
 
-100%{
+/*====================*/
 
-opacity:1;
-transform:translate(-50%,-50%);
+#mensajeInicio{
 
-}
+position:absolute;
 
-}
-/* ESTRELLAS */
+width:100%;
 
-.estrella{
+height:100%;
 
-    position:absolute;
+display:none;
 
-    background:white;
+justify-content:center;
 
-    border-radius:50%;
+align-items:center;
 
-    animation:parpadear infinite alternate;
+flex-direction:column;
 
-}
+z-index:99;
 
-@keyframes parpadear{
-
-    from{
-
-        opacity:.2;
-        transform:scale(.8);
-
-    }
-
-    to{
-
-        opacity:1;
-        transform:scale(1.4);
-
-    }
-
-}
-/*=========================
- ESTRELLA FUGAZ
-=========================*/
-
-.fugaz{
-
-    position:absolute;
-
-    width:3px;
-    height:3px;
-
-    background:white;
-
-    border-radius:50%;
-
-    box-shadow:
-    0 0 10px white,
-    0 0 20px white,
-    0 0 40px cyan;
-
-    animation:caer 2s linear forwards;
+background:rgba(0,0,0,.35);
 
 }
 
-@keyframes caer{
+#mensajeInicio h2{
 
-    from{
+color:white;
 
-        transform:
-        translate(0,0);
+font-size:40px;
 
-        opacity:1;
+text-align:center;
 
-    }
+margin-bottom:40px;
 
-    to{
+text-shadow:
 
-        transform:
-        translate(-600px,600px);
+0 0 20px deeppink,
 
-        opacity:0;
-
-    }
+0 0 50px hotpink;
 
 }
 
-/*=========================
- FRASES
-=========================*/
+#entrar{
 
-.frase{
+padding:18px 45px;
 
-    position:absolute;
+font-size:22px;
 
-    color:white;
+border:none;
 
-    font-size:24px;
+border-radius:50px;
 
-    font-weight:bold;
+cursor:pointer;
 
-    text-shadow:
-    0 0 10px hotpink,
-    0 0 20px deeppink,
-    0 0 40px red;
+background:
 
-    animation:subir 4s forwards;
+linear-gradient(45deg,
 
-}
+deeppink,
 
-@keyframes subir{
+violet);
 
-    from{
+color:white;
 
-        opacity:0;
-
-        transform:
-        translateY(50px);
-
-    }
-
-    to{
-
-        opacity:1;
-
-        transform:
-        translateY(-80px);
-
-    }
+transition:.4s;
 
 }
 
-/*=========================
- CORAZÓN
-=========================*/
+#entrar:hover{
 
-.corazon{
+transform:scale(1.1);
 
-    position:absolute;
+box-shadow:
 
-    color:pink;
-
-    font-size:30px;
-
-    animation:latir 3s forwards;
-
-}
-
-@keyframes latir{
-
-0%{
-
-transform:scale(0);
-
-opacity:0;
-
-}
-
-20%{
-
-transform:scale(1.3);
-
-opacity:1;
-
-}
-
-100%{
-
-transform:translateY(-120px);
-
-opacity:0;
-
-}
+0 0 30px deeppink;
 
 }
