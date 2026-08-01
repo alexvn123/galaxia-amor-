@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Galaxy Love ❤️</title>
   <link rel="stylesheet" href="style.css">
+  <!-- Aseguramos que Three.js se cargue PRIMERO y espere -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.167.1/build/three.min.js"></script>
   <style>canvas { z-index:2; display:block; }</style>
 </head>
@@ -23,12 +24,19 @@
 <audio id="musica" loop>
   <source src="assets/audio/Melendi - Destino o Casualidad ft. HaAsh.mp3" type="audio/mpeg">
 
+<!-- LOS ARCHIVOS JS VAN AL FINAL, DESPUÉS DE THREE.JS -->
 <script src="planetas.js"></script>
 <script src="nebulosas.js"></script>
 <script src="main.js"></script>
 
 <script>
-window.addEventListener("load", () => {
+// Esperamos a que TODOS los recursos (incluido Three.js) estén listos
+document.addEventListener("DOMContentLoaded", () => {
+  const loader = document.getElementById("loader");
+  const mensajeInicio = document.getElementById("mensajeInicio");
+  const entrar = document.getElementById("entrar");
+  const musica = document.getElementById("musica");
+
   setTimeout(() => {
     loader.style.opacity = "0";
     setTimeout(() => {
@@ -39,8 +47,14 @@ window.addEventListener("load", () => {
 
   entrar.addEventListener("click", () => {
     mensajeInicio.style.display = "none";
-    crearGalaxia();
-    musica.play().catch(e=>console.log(e));
+    // Verificamos que THREE exista antes de crear la galaxia
+    if (typeof THREE !== "undefined") {
+      crearGalaxia();
+      musica.play().catch(e=>console.log("Audio bloqueado:",e));
+    } else {
+      alert("Error al cargar los gráficos, recarga la página");
+      location.reload();
+    }
   });
 });
 </script>
