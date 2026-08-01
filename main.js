@@ -111,6 +111,7 @@ renderer.domElement
 
 crearEstrellas();
 crearPlanetas();
+crearNebulosas();
 animar();
 
 }
@@ -260,6 +261,8 @@ galaxy.rotation.y += 0.0008;
 galaxy.rotation.z += 0.0002;
 
 animarPlanetas();
+
+animarNebulosas();
     
 renderer.render(
 
