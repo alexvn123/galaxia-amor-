@@ -53,6 +53,16 @@ function crearGalaxia(){
 
 scene = new THREE.Scene();
 
+const luz = new THREE.PointLight(0xffffff,2);
+
+luz.position.set(20,20,20);
+
+scene.add(luz);
+
+const ambiente = new THREE.AmbientLight(0x666666);
+
+scene.add(ambiente);
+    
 camera = new THREE.PerspectiveCamera(
 
 75,
@@ -100,7 +110,7 @@ renderer.domElement
 //----------------------------
 
 crearEstrellas();
-
+crearPlanetas();
 animar();
 
 }
@@ -249,6 +259,8 @@ galaxy.rotation.y += 0.0008;
 
 galaxy.rotation.z += 0.0002;
 
+animarPlanetas();
+    
 renderer.render(
 
 scene,
