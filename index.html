@@ -1,58 +1,44 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>Galaxy Love ❤️</title>
-
-<link rel="stylesheet" href="style.css">
-
-<script src="https://cdn.jsdelivr.net/npm/three@0.167.1/build/three.min.js"></script>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galaxy Love ❤️</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- SOLO una versión funcional de Three.js, en el head -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.167.1/build/three.min.js"></script>
 </head>
-
 <body>
 
 <div id="loader">
-
-<h1>✨ Creando un universo para Ariana ✨</h1>
-
-<p>Cargando estrellas...</p>
-
+  <h1>✨ Creando un universo para Ariana ✨</h1>
+  <p>Cargando estrellas...</p>
 </div>
 
 <div id="mensajeInicio">
-
-<h2>Tengo algo muy especial para mostrarte...</h2>
-
-<button id="entrar">
-
-Entrar al Universo ❤️
-
-</button>
-
+  <h2>Tengo algo muy especial para mostrarte...</h2>
+  <button id="entrar">Entrar al Universo ❤️</button>
 </div>
 
-<audio
-id="musica"
-loop>
+<audio id="musica" loop>
+  <source src="assets/audio/Melendi - Destino o Casualidad ft. HaAsh.mp3" type="audio/mpeg">
 
-<source
-src="assets/audio/Melendi - Destino o Casualidad ft. HaAsh.mp3"
-type="audio/mpeg">
 
-</audio>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r167/three.min.js"></script>
+<!-- ELIMINAMOS el enlace roto y duplicado de cdnjs, solo tus archivos propios aquí -->
 <script src="planetas.js"></script>
 <script src="nebulosas.js"></script>
 <script src="main.js"></script>
 
-</body>
+<script>
+// Código para activar audio y ocultar cargador al hacer clic
+document.getElementById('entrar').addEventListener('click', () => {
+  document.getElementById('musica').play().catch(e=>console.log("Audio bloqueado por navegador:",e));
+  document.getElementById('mensajeInicio').style.display = 'none';
+  document.getElementById('loader').style.display = 'none';
+  // Asegúrate que tu función de arranque se llame aquí si no lo hace sola:
+  // iniciarGalaxia();
+});
+</script>
 
+</body>
 </html>
