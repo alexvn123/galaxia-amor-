@@ -5,9 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Galaxy Love ❤️</title>
   <link rel="stylesheet" href="style.css">
-  <!-- Aseguramos que Three.js se cargue PRIMERO y espere -->
-  <script src="https://cdn.jsdelivr.net/npm/three@0.167.1/build/three.min.js"></script>
-  <style>canvas { z-index:2; display:block; }</style>
+  <!-- Librería fiable y cargada primero -->
+  <script src="https://unpkg.com/three@0.167.1/build/three.min.js"></script>
 </head>
 <body>
 
@@ -16,47 +15,49 @@
   <p>Cargando estrellas...</p>
 </div>
 
-<div id="mensajeInicio" style="display:none;">
+<div id="mensajeInicio">
   <h2>Tengo algo muy especial para mostrarte...</h2>
   <button id="entrar">Entrar al Universo ❤️</button>
 </div>
 
-<audio id="musica" loop>
-  <source src="assets/audio/Melendi - Destino o Casualidad ft. HaAsh.mp3" type="audio/mpeg">
+<audio id="musica" loop preload="auto">
+  <source src="" type="audio/mpeg">
+  Tu navegador no soporta audio
 
-<!-- LOS ARCHIVOS JS VAN AL FINAL, DESPUÉS DE THREE.JS -->
+
 <script src="planetas.js"></script>
 <script src="nebulosas.js"></script>
 <script src="main.js"></script>
 
 <script>
-// Esperamos a que TODOS los recursos (incluido Three.js) estén listos
-document.addEventListener("DOMContentLoaded", () => {
-  const loader = document.getElementById("loader");
-  const mensajeInicio = document.getElementById("mensajeInicio");
-  const entrar = document.getElementById("entrar");
-  const musica = document.getElementById("musica");
+// Ocultar mensaje al inicio por código para seguridad
+document.getElementById("mensajeInicio").style.display = "none";
 
-  setTimeout(() => {
-    loader.style.opacity = "0";
-    setTimeout(() => {
-      loader.style.display = "none";
-      mensajeInicio.style.display = "flex";
+// Temporizador de carga seguro
+window.onload = function(){
+  setTimeout(()=>{
+    document.getElementById("loader").style.opacity = "0";
+    setTimeout(()=>{
+      document.getElementById("loader").style.display = "none";
+      document.getElementById("mensajeInicio").style.display = "flex";
     }, 1000);
   }, 2000);
 
-  entrar.addEventListener("click", () => {
-    mensajeInicio.style.display = "none";
-    // Verificamos que THREE exista antes de crear la galaxia
-    if (typeof THREE !== "undefined") {
+  // Botón seguro con comprobación total
+  document.getElementById("entrar").onclick = function(){
+    document.getElementById("mensajeInicio").style.display = "none";
+    if (typeof THREE !== "undefined"){
       crearGalaxia();
-      musica.play().catch(e=>console.log("Audio bloqueado:",e));
+      document.getElementById("musica").play().catch(e=>{
+        alert("Haz clic otra vez para activar el audio");
+        console.log(e);
+      });
     } else {
-      alert("Error al cargar los gráficos, recarga la página");
+      alert("Error de carga: recarga la página (Ctrl+F5)");
       location.reload();
     }
-  });
-});
+  };
+};
 </script>
 
 </body>
