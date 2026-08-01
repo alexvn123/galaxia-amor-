@@ -1,131 +1,29 @@
-*{
-
-margin:0;
-padding:0;
-box-sizing:border-box;
-
-}
-
-body{
-
-overflow:hidden;
-
-background:black;
-
-font-family:Arial;
-
-}
-
-canvas{
-
-position:absolute;
-
-top:0;
-left:0;
-
-}
-
-/*====================*/
+*{margin:0; padding:0; box-sizing:border-box;}
+body{overflow:hidden; background:#000; font-family:Arial;}
+canvas{position:absolute; top:0; left:0;}
 
 #loader{
-
-position:absolute;
-
-width:100%;
-height:100%;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-flex-direction:column;
-
-background:black;
-
-color:white;
-
-z-index:100;
-
-transition:1s;
-
+  position:absolute; width:100%; height:100%;
+  display:flex; flex-direction:column;
+  justify-content:center; align-items:center;
+  background:#000; color:white; z-index:100;
+  transition:opacity 1s;
 }
 
-/*====================*/
-
 #mensajeInicio{
-
-position:absolute;
-
-width:100%;
-
-height:100%;
-
-display:none;
-
-justify-content:center;
-
-align-items:center;
-
-flex-direction:column;
-
-z-index:99;
-
-background:rgba(0,0,0,.35);
-
+  position:absolute; width:100%; height:100%;
+  justify-content:center; align-items:center; flex-direction:column;
+  z-index:99; background:rgba(0,0,0,.35);
 }
 
 #mensajeInicio h2{
-
-color:white;
-
-font-size:40px;
-
-text-align:center;
-
-margin-bottom:40px;
-
-text-shadow:
-
-0 0 20px deeppink,
-
-0 0 50px hotpink;
-
+  color:white; font-size:clamp(28px,5vw,40px); text-align:center;
+  margin-bottom:40px; text-shadow:0 0 20px deeppink, 0 0 50px hotpink;
 }
 
 #entrar{
-
-padding:18px 45px;
-
-font-size:22px;
-
-border:none;
-
-border-radius:50px;
-
-cursor:pointer;
-
-background:
-
-linear-gradient(45deg,
-
-deeppink,
-
-violet);
-
-color:white;
-
-transition:.4s;
-
+  padding:18px 45px; font-size:22px; border:none; border-radius:50px;
+  cursor:pointer; background:linear-gradient(45deg, deeppink, violet);
+  color:white; transition:.4s;
 }
-
-#entrar:hover{
-
-transform:scale(1.1);
-
-box-shadow:
-
-0 0 30px deeppink;
-
-}
+#entrar:hover{transform:scale(1.1); box-shadow:0 0 30px deeppink;}
