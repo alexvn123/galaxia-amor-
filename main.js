@@ -1,126 +1,46 @@
-const universo = document.getElementById("universo");
+//============================
+// CARGA
+//============================
 
-//========================
-// CREAR ESTRELLAS
-//========================
+const loader=document.getElementById("loader");
 
-for(let i=0;i<500;i++){
+const inicio=document.getElementById("mensajeInicio");
 
-    const estrella=document.createElement("div");
+const musica=document.getElementById("musica");
 
-    estrella.classList.add("estrella");
+setTimeout(()=>{
 
-    const tamaño=Math.random()*3+1;
+loader.style.opacity="0";
 
-    estrella.style.width=tamaño+"px";
-    estrella.style.height=tamaño+"px";
+setTimeout(()=>{
 
-    estrella.style.left=Math.random()*window.innerWidth+"px";
+loader.style.display="none";
 
-    estrella.style.top=Math.random()*window.innerHeight+"px";
+inicio.style.display="flex";
 
-    estrella.style.animationDuration=
-        (Math.random()*3+1)+"s";
+},1000);
 
-    universo.appendChild(estrella);
+},3000);
+
+//============================
+
+document
+.getElementById("entrar")
+.onclick=function(){
+
+musica.play();
+
+inicio.style.display="none";
+
+// Aquí construiremos la galaxia
+crearGalaxia();
 
 }
-//========================
-// FRASES DE AMOR
-//========================
 
-const frases=[
+//============================
 
-"Eres mi estrella favorita ❤️",
+function crearGalaxia(){
 
-"Mi universo comienza contigo 🌌",
+console.log("Universo iniciado");
 
-"Siempre te elegiría 💖",
-
-"Contigo todo brilla ✨",
-
-"Eres mi galaxia favorita 🌠",
-
-"Mi corazón viaja hacia ti ❤️",
-
-"Te amo hasta el infinito 💫",
-
-"Eres mi destino ⭐",
-
-"Nuestro amor ilumina el universo 🌌",
-
-"Siempre serás mi constelación ❤️"
-
-];
-
-//========================
-// CLIC
-//========================
-
-document.addEventListener("click",function(e){
-
-    const frase=document.createElement("div");
-
-    frase.className="frase";
-
-    frase.innerHTML=
-
-frases[Math.floor(Math.random()*frases.length)];
-
-    frase.style.left=e.pageX+"px";
-
-    frase.style.top=e.pageY+"px";
-
-    universo.appendChild(frase);
-
-    setTimeout(()=>{
-
-        frase.remove();
-
-    },4000);
-
-    // Corazón
-
-    const corazon=document.createElement("div");
-
-    corazon.className="corazon";
-
-    corazon.innerHTML="❤️";
-
-    corazon.style.left=e.pageX+"px";
-
-    corazon.style.top=e.pageY+"px";
-
-    universo.appendChild(corazon);
-
-    setTimeout(()=>{
-
-        corazon.remove();
-
-    },3000);
-
-});
-
-//========================
-// ESTRELLAS FUGACES
-//========================
-
-setInterval(()=>{
-
-    const fugaz=document.createElement("div");
-
-    fugaz.className="fugaz";
-
-    fugaz.style.left=Math.random()*window.innerWidth+"px";
-
-    fugaz.style.top=Math.random()*200+"px";
-
-    universo.appendChild(fugaz);
-
-    setTimeout(()=>{
-
-        fugaz.remove();
-
-    },2000);
-
-},2500);
+}
