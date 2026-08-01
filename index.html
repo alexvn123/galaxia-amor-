@@ -5,8 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Galaxy Love ❤️</title>
   <link rel="stylesheet" href="style.css">
-  <!-- SOLO una versión funcional de Three.js, en el head -->
+  <!-- ÚNICA versión válida de Three.js -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.167.1/build/three.min.js"></script>
+  <style>
+    /* Pequeño arreglo para que el lienzo no quede oculto por error */
+    canvas { z-index: 1; }
+  </style>
 </head>
 <body>
 
@@ -24,19 +28,17 @@
   <source src="assets/audio/Melendi - Destino o Casualidad ft. HaAsh.mp3" type="audio/mpeg">
 
 
-<!-- ELIMINAMOS el enlace roto y duplicado de cdnjs, solo tus archivos propios aquí -->
 <script src="planetas.js"></script>
 <script src="nebulosas.js"></script>
 <script src="main.js"></script>
 
 <script>
-// Código para activar audio y ocultar cargador al hacer clic
 document.getElementById('entrar').addEventListener('click', () => {
-  document.getElementById('musica').play().catch(e=>console.log("Audio bloqueado por navegador:",e));
+  document.getElementById('musica').play();
   document.getElementById('mensajeInicio').style.display = 'none';
   document.getElementById('loader').style.display = 'none';
-  // Asegúrate que tu función de arranque se llame aquí si no lo hace sola:
-  // iniciarGalaxia();
+  // Aseguramos que la escena se dibuje bien al activar
+  setTimeout(crearGalaxia, 50);
 });
 </script>
 
