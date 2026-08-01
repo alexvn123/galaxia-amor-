@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Galaxy Love ❤️</title>
   <link rel="stylesheet" href="style.css">
-  <!-- Librería fiable y cargada primero -->
-  <script src="https://unpkg.com/three@0.167.1/build/three.min.js"></script>
+  <!-- ENLACE DE THREE.JS 100% COMPATIBLE, SIN BLOQUEOS CORS/CORB -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.167.1/build/three.min.js"></script>
 </head>
 <body>
 
@@ -30,32 +30,29 @@
 <script src="main.js"></script>
 
 <script>
-// Ocultar mensaje al inicio por código para seguridad
 document.getElementById("mensajeInicio").style.display = "none";
 
-// Temporizador de carga seguro
 window.onload = function(){
-  setTimeout(()=>{
-    document.getElementById("loader").style.opacity = "0";
-    setTimeout(()=>{
-      document.getElementById("loader").style.display = "none";
-      document.getElementById("mensajeInicio").style.display = "flex";
-    }, 1000);
-  }, 2000);
-
-  // Botón seguro con comprobación total
-  document.getElementById("entrar").onclick = function(){
-    document.getElementById("mensajeInicio").style.display = "none";
-    if (typeof THREE !== "undefined"){
-      crearGalaxia();
-      document.getElementById("musica").play().catch(e=>{
-        alert("Haz clic otra vez para activar el audio");
-        console.log(e);
-      });
-    } else {
-      alert("Error de carga: recarga la página (Ctrl+F5)");
-      location.reload();
+  // Espera segura a que THREE esté listo, sin errores de origen
+  const comprobarThree = setInterval(()=>{
+    if (window.THREE){
+      clearInterval(comprobarThree);
+      // Quitar pantalla de carga
+      setTimeout(()=>{
+        loader.style.opacity = "0";
+        setTimeout(()=>{
+          loader.style.display = "none";
+          mensajeInicio.style.display = "flex";
+        }, 1000);
+      }, 2000);
     }
+  }, 100);
+
+  // Botón seguro SIN alertas innecesarias
+  document.getElementById("entrar").onclick = function(){
+    mensajeInicio.style.display = "none";
+    crearGalaxia();
+    musica.play().catch(err=>console.log("Audio activado por usuario:",err));
   };
 };
 </script>
