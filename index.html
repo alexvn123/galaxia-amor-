@@ -5,11 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Galaxy Love ❤️</title>
   <link rel="stylesheet" href="style.css">
-  <!-- ÚNICA versión válida de Three.js -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.167.1/build/three.min.js"></script>
   <style>
-    /* Pequeño arreglo para que el lienzo no quede oculto por error */
-    canvas { z-index: 1; }
+    canvas { z-index: 2 !important; display:block; }
   </style>
 </head>
 <body>
@@ -33,12 +31,18 @@
 <script src="main.js"></script>
 
 <script>
-document.getElementById('entrar').addEventListener('click', () => {
-  document.getElementById('musica').play();
-  document.getElementById('mensajeInicio').style.display = 'none';
-  document.getElementById('loader').style.display = 'none';
-  // Aseguramos que la escena se dibuje bien al activar
-  setTimeout(crearGalaxia, 50);
+// Arreglo de sincronización clave
+document.getElementById("entrar").addEventListener("click", async () => {
+  // Ocultar primero
+  document.getElementById("mensajeInicio").style.display = "none";
+  document.getElementById("loader").style.display = "none";
+  // Pequeña pausa para que el navegador limpie la pantalla
+  await new Promise(res => setTimeout(res, 100));
+  // Crear galaxia y asegurar renderizado inicial
+  crearGalaxia();
+  renderer.render(scene, camera);
+  // Reproducir audio al final
+  document.getElementById("musica").play().catch(e=>console.log(e));
 });
 </script>
 
