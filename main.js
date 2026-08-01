@@ -52,67 +52,38 @@ document.getElementById("entrar").onclick = () => {
 function crearGalaxia(){
 
 scene = new THREE.Scene();
+scene.background = new THREE.Color(0x000000); // Asegura fondo negro limpio
 
-const luz = new THREE.PointLight(0xffffff,2);
-
+// LUCES MÁS FUERTES (antes eran muy débiles y todo se veía negro)
+const luz = new THREE.PointLight(0xffffff, 3); // Subimos intensidad
 luz.position.set(20,20,20);
-
 scene.add(luz);
 
-const ambiente = new THREE.AmbientLight(0x666666);
-
+const ambiente = new THREE.AmbientLight(0x888888); // Más brillante
 scene.add(ambiente);
     
 camera = new THREE.PerspectiveCamera(
-
 75,
-
 window.innerWidth/window.innerHeight,
-
 0.1,
-
 2000
-
 );
 
-camera.position.z = 70;
+camera.position.z = 65; // Más cerca, mejor visibilidad
+camera.lookAt(0,0,0); // APUNTA AL CENTRO DE LA GALAXIA (faltaba esto!)
 
 //----------------------------
-
-renderer = new THREE.WebGLRenderer({
-
-antialias:true,
-
-alpha:true
-
-});
-
-renderer.setSize(
-
-window.innerWidth,
-
-window.innerHeight
-
-);
-
-renderer.setPixelRatio(
-
-window.devicePixelRatio
-
-);
-
-document.body.appendChild(
-
-renderer.domElement
-
-);
-
+renderer = new THREE.WebGLRenderer({antialias:true}); // Quitamos alpha que a veces molesta
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(window.devicePixelRatio);
+document.body.appendChild(renderer.domElement);
 //----------------------------
 
 crearEstrellas();
 crearPlanetas();
 crearNebulosas();
 animar();
+}
 
 }
 
