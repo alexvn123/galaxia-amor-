@@ -13,12 +13,12 @@ const luz = new THREE.PointLight(0xffffff, 3);
 luz.position.set(20,20,20); scene.add(luz);
 scene.add(new THREE.AmbientLight(0x888888));
 
-camera = new THREE.PerspectiveCamera(75,innerWidth/innerHeight,0.1,2000);
+camera = new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,2000);
 camera.position.z = 65; camera.lookAt(0,0,0);
 
 renderer = new THREE.WebGLRenderer({antialias:true});
-renderer.setSize(innerWidth,innerHeight);
-renderer.setPixelRatio(devicePixelRatio);
+renderer.setSize(window.innerWidth,window.innerHeight);
+renderer.setPixelRatio(window.devicePixelRatio);
 document.body.appendChild(renderer.domElement);
 
 crearEstrellas();
@@ -53,7 +53,7 @@ if(typeof animarNebulosas==="function") animarNebulosas();
 renderer.render(scene,camera);
 }
 
-addEventListener("resize",()=>{
-if(!camera)return; camera.aspect=innerWidth/innerHeight;
-camera.updateProjectionMatrix(); renderer.setSize(innerWidth,innerHeight);
+window.addEventListener("resize",()=>{
+if(!camera)return; camera.aspect=window.innerWidth/window.innerHeight;
+camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth,window.innerHeight);
 });
