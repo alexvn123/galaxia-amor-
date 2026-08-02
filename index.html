@@ -33,25 +33,28 @@
 document.getElementById("mensajeInicio").style.display = "none";
 
 window.onload = function(){
-  const comprobarThree = setInterval(()=>{
-    if (window.THREE){
-      clearInterval(comprobarThree);
+  // Espera segura a que TODAS las funciones existan
+  const esperarListo = setInterval(()=>{
+    if (window.THREE && typeof crearGalaxia === "function"){
+      clearInterval(esperarListo);
+      // Ocultar cargador suavemente
       setTimeout(()=>{
         loader.style.opacity = "0";
         setTimeout(()=>{
           loader.style.display = "none";
           mensajeInicio.style.display = "flex";
-        }, 1000);
+        }, 1200);
       }, 2500);
     }
-  }, 100);
+  }, 150);
 
   document.getElementById("entrar").onclick = function(){
     mensajeInicio.style.display = "none";
     crearGalaxia();
-    crearCorazon();
-    crearPalabras();
-    musica.play().catch(e=>console.log(e));
+    // Solo llama si existen, sin romper nada
+    if (typeof crearCorazon === "function") crearCorazon();
+    if (typeof crearPalabras === "function") crearPalabras();
+    musica.play().catch(e=>console.log("Audio activado:",e));
   };
 };
 </script>
