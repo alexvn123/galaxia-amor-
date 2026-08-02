@@ -47,7 +47,12 @@ function animar(){
 requestAnimationFrame(animar);
 galaxy.rotation.y += .0007; galaxy.rotation.z += .00015;
 if(corazon) corazon.rotation.z += 0.001;
-palabras.forEach(p=>{p.rotation.y += 0.0005; p.position.y += Math.sin(Date.now()*0.001+p.userData.offset)*0.003;});
+if(palabras && palabras.length>0){
+  palabras.forEach(p=>{
+    p.rotation.y += 0.0005;
+    p.position.y += Math.sin(Date.now()*0.001+p.userData.offset)*0.003;
+  });
+}
 if(typeof animarPlanetas==="function") animarPlanetas();
 if(typeof animarNebulosas==="function") animarNebulosas();
 renderer.render(scene,camera);
