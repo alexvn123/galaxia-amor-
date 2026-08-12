@@ -789,14 +789,10 @@ function dibujarGalaxia() {
         );
 
 
-        ctx.fillStyle =
-
-            Math.random() > .25
-
-                ? "#ff28bd"
-
-                : "#ffd5ef";
-
+          ctx.fillStyle =
+          Math.random() > .25
+          ? "#00aaff"
+          : "#b8ecff";
 
         ctx.fill();
 
