@@ -2,28 +2,44 @@
 <html lang="es">
 
 <head>
+
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Mi Universo ❤️</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
 </head>
 
 <body>
 
-    <!-- ESCENA 3D -->
+    <!-- =====================================
+         ESCENA 3D
+    ====================================== -->
+
     <div id="scene"></div>
 
 
-    <!-- INTERFAZ -->
+    <!-- =====================================
+         INTERFAZ
+    ====================================== -->
+
     <div id="interface">
+
 
         <div class="title">
 
-            <h1>MI UNIVERSO</h1>
+            <h1>
+                MI UNIVERSO
+            </h1>
 
             <p>
                 PARA ARIANA ❤️
@@ -32,60 +48,36 @@
         </div>
 
 
+        <!-- FRASE -->
+
         <div id="phrase"></div>
 
 
+        <!-- BOTONES -->
+
         <div class="controls">
-
-            <label class="button">
-
-                📸 FOTOS
-
-                <input
-                    id="imageInput"
-                    type="file"
-                    accept="image/*"
-                    multiple>
-
-            </label>
-
-
-            <label class="button">
-
-                🎵 MÚSICA
-
-                <input
-                    id="musicInput"
-                    type="file"
-                    accept="audio/*">
-
-            </label>
-
 
             <button
                 id="musicButton"
-                class="button">
-
+                class="button"
+            >
                 ▶ MÚSICA
-
             </button>
 
 
             <button
                 id="cameraButton"
-                class="button">
-
+                class="button"
+            >
                 🎥 CÁMARA
-
             </button>
 
 
             <button
-                id="zoomButton"
-                class="button">
-
-                🔭 ZOOM
-
+                id="nextButton"
+                class="button"
+            >
+                ❤️ SIGUIENTE
             </button>
 
         </div>
@@ -94,26 +86,38 @@
         <div class="help">
 
             Arrastra para mirar ·
-            Desliza para explorar ·
-            Usa la rueda para acercarte
+            Usa la rueda para acercarte ·
+            ❤️ Ariana ❤️
 
         </div>
 
     </div>
 
 
-    <!-- AUDIO -->
+    <!-- =====================================
+         MÚSICA
+    ====================================== -->
 
     <audio
         id="music"
-        loop>
-    </audio>
+        src="musica/destino.mp3"
+        loop
+    ></audio>
 
 
-    <!-- THREE.JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r167/three.min.js"></script>
+    <!-- =====================================
+         THREE.JS
+    ====================================== -->
 
-    <!-- NUESTRO CÓDIGO -->
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r167/three.min.js">
+    </script>
+
+
+    <!-- =====================================
+         NUESTRO JAVASCRIPT
+    ====================================== -->
+
     <script src="script.js"></script>
 
 </body>
