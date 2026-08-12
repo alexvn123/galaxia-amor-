@@ -1,278 +1,150 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
     <meta charset="UTF-8">
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     >
 
-    <meta
-        name="theme-color"
-        content="#050208"
-    >
+    <title>Para Ariana ❤️</title>
 
-    <title>Para Ariana · Mi Universo</title>
-
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
-
+    <link rel="stylesheet" href="style.css">
 </head>
-
 
 <body>
 
+    <!-- ============================= -->
+    <!-- INTRODUCCIÓN -->
+    <!-- ============================= -->
 
-    <!-- =================================================
-         FONDO
-    ================================================== -->
-
-    <div class="background"></div>
-
-
-    <!-- =================================================
-         PANTALLA DE ENTRADA
-    ================================================== -->
-
-    <section
-        id="intro"
-        class="intro"
-    >
-
-        <div class="intro-stars"></div>
-
+    <section id="intro">
 
         <div class="intro-content">
 
-            <span class="eyebrow">
+            <p class="small-title">
                 UNA HISTORIA ENTRE ESTRELLAS
-            </span>
-
+            </p>
 
             <h1>
                 Para Ariana
             </h1>
 
+            <div class="line"></div>
 
-            <div class="intro-line"></div>
-
-
-            <p>
+            <p class="description">
                 Hay personas que llegan por casualidad...
                 <br>
                 y terminan convirtiéndose en nuestro universo.
             </p>
 
-
-            <button
-                id="enterButton"
-                class="enter-button"
-            >
-
-                <span>
-                    Entrar a mi universo
-                </span>
-
-                <span class="enter-arrow">
-                    →
-                </span>
-
+            <button id="enterButton">
+                Entrar a mi universo
+                <span>→</span>
             </button>
 
-
-            <small>
+            <p class="headphones">
                 Ponte los audífonos · Sube el volumen
-            </small>
+            </p>
 
         </div>
 
     </section>
 
 
-    <!-- =================================================
-         ESCENA 3D
-    ================================================== -->
+    <!-- ============================= -->
+    <!-- UNIVERSO -->
+    <!-- ============================= -->
 
-    <main
-        id="scene"
-        class="scene"
-    ></main>
+    <section id="universe">
 
-
-    <!-- =================================================
-         INTERFAZ PRINCIPAL
-    ================================================== -->
-
-    <div
-        id="interface"
-        class="interface hidden"
-    >
+        <canvas id="galaxy"></canvas>
 
 
-        <!-- SUPERIOR -->
+        <!-- FRASE -->
 
-        <header class="topbar">
+        <div id="phraseContainer">
 
-            <div class="brand">
-
-                <span class="brand-dot"></span>
-
-                <span>
-                    MI UNIVERSO
-                </span>
-
+            <div id="phrase">
+                Ariana, tú eres mi universo.
             </div>
-
-
-            <div class="counter">
-
-                <span id="photoNumber">
-                    01
-                </span>
-
-                <span class="counter-line"></span>
-
-                <span id="photoTotal">
-                    06
-                </span>
-
-            </div>
-
-        </header>
-
-
-        <!-- CENTRO -->
-
-        <section class="center-content">
-
-            <div
-                id="phrase"
-                class="phrase"
-            ></div>
-
-        </section>
-
-
-        <!-- PARTE INFERIOR -->
-
-        <footer class="bottom-bar">
-
-
-            <div class="music-info">
-
-                <div class="music-disc">
-
-                    ♪
-
-                </div>
-
-
-                <div>
-
-                    <span class="music-label">
-                        REPRODUCIENDO
-                    </span>
-
-                    <strong>
-                        Destino o Casualidad
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <div class="controls">
-
-
-                <button
-                    id="previousButton"
-                    class="control"
-                    aria-label="Anterior"
-                >
-                    ←
-                </button>
-
-
-                <button
-                    id="musicButton"
-                    class="control play"
-                    aria-label="Música"
-                >
-                    ❚❚
-                </button>
-
-
-                <button
-                    id="nextButton"
-                    class="control"
-                    aria-label="Siguiente"
-                >
-                    →
-                </button>
-
-
-                <button
-                    id="cameraButton"
-                    class="control"
-                    aria-label="Cámara"
-                >
-                    ◉
-                </button>
-
-            </div>
-
-
-            <div class="signature">
-
-                Para ti, Ariana
-
-                <span>
-                    ♥
-                </span>
-
-            </div>
-
-
-        </footer>
-
-
-        <!-- INDICACIÓN -->
-
-        <div class="gesture">
-
-            ARRASTRA PARA EXPLORAR ·
-            RUEDA PARA ACERCAR
 
         </div>
 
 
-    </div>
+        <!-- FOTOS -->
+
+        <div id="photos"></div>
 
 
-    <!-- =================================================
-         AUDIO
-    ================================================== -->
+        <!-- CONTROLES -->
 
-    <audio
-        id="assets"
-        src="assets/audio/Melendi - Destino o Casualidad ft. HaAsh.mp3"
-        loop
-        preload="auto"
-    ></audio>
+        <div id="controls">
 
-    <!-- =================================================
-         JAVASCRIPT
-    ================================================== -->
+            <button id="previous">
+                ‹
+            </button>
+
+            <div id="counter">
+                <span id="current">01</span>
+                /
+                <span id="total">06</span>
+            </div>
+
+            <button id="next">
+                ›
+            </button>
+
+        </div>
+
+
+        <!-- BOTÓN MÚSICA -->
+
+        <button id="musicButton">
+            ♪
+        </button>
+
+
+        <!-- MENSAJE FINAL -->
+
+        <div id="finalMessage">
+
+            <div class="final-small">
+                Y SI FUE DESTINO...
+            </div>
+
+            <div class="final-big">
+                TE ELEGIRÍA<br>
+                OTRA VEZ.
+            </div>
+
+            <div class="final-name">
+                — Ariana ❤️
+            </div>
+
+        </div>
+
+
+        <!-- AUDIO -->
+
+        <audio
+            id="music"
+            loop
+            preload="auto"
+        >
+
+            <source
+                src="musica/destino.mp3"
+                type="audio/mpeg"
+            >
+
+        </audio>
+
+    </section>
+
 
     <script src="script.js"></script>
 
-
 </body>
-
 </html>
