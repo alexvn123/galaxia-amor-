@@ -117,7 +117,7 @@ const FOTOS = [
 
 const MENSAJES = [
 
-    "Ariana ❤️",
+    "Kerly ❤️",
 
     "Quizás fue destino...",
 
@@ -161,16 +161,6 @@ const MENSAJES = [
 const FRASES = [
 
     "A veces una casualidad puede cambiarlo todo.",
-
-    "De todas las personas, tuve la suerte de encontrarte.",
-
-    "Quizás fue destino...",
-
-    "...o quizás la casualidad más bonita.",
-
-    "Pero hoy sé que te elegiría una y otra vez.",
-
-    "Ariana, tú eres mi universo."
 
 ];
 
