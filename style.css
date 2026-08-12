@@ -1,26 +1,44 @@
+/* =====================================================
+   CONFIGURACIÓN GENERAL
+===================================================== */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+
 html,
 body {
+
     width: 100%;
     height: 100%;
+
     overflow: hidden;
+
     background: #020106;
+
 }
+
 
 body {
-    font-family: Georgia, "Times New Roman", serif;
+
     color: white;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    touch-action: none;
+
 }
 
 
-/* =========================================
-   INTRO
-========================================= */
+/* =====================================================
+   PANTALLA INICIAL
+===================================================== */
 
 #intro {
 
@@ -28,30 +46,29 @@ body {
 
     inset: 0;
 
-    width: 100%;
-    height: 100%;
+    z-index: 1000;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
 
     background:
 
         radial-gradient(
             circle at 50% 60%,
             rgba(255, 0, 170, .08),
-            transparent 35%
+            transparent 32%
         ),
 
         #030107;
 
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    z-index: 100;
-
     transition:
-        opacity 1.2s ease,
-        visibility 1.2s ease;
+
+        opacity 1.4s ease,
+        visibility 1.4s ease;
+
 }
 
 
@@ -62,6 +79,7 @@ body {
     visibility: hidden;
 
     pointer-events: none;
+
 }
 
 
@@ -69,15 +87,13 @@ body {
 
     width: 90%;
 
-    max-width: 650px;
+    max-width: 700px;
 
     text-align: center;
 
-    transform:
-        translateY(0);
-
     animation:
         introAppear 1.5s ease;
+
 }
 
 
@@ -88,7 +104,7 @@ body {
         opacity: 0;
 
         transform:
-            translateY(30px);
+            translateY(35px);
 
     }
 
@@ -104,168 +120,176 @@ body {
 }
 
 
-.small-title {
+.intro-subtitle {
 
-    color: #b9a0b8;
+    color: #bca5ba;
 
     font-family:
         Arial,
         sans-serif;
 
     font-size:
-        clamp(11px, 2vw, 16px);
+        clamp(10px, 2vw, 15px);
 
     letter-spacing:
         8px;
 
     margin-bottom:
         35px;
+
 }
 
 
-h1 {
+.intro-content h1 {
+
+    color:
+        #f5abd8;
 
     font-size:
-        clamp(60px, 10vw, 105px);
+        clamp(58px, 11vw, 105px);
 
     font-weight:
         400;
-
-    color:
-        #f7a7d8;
 
     margin-bottom:
         40px;
 
     text-shadow:
 
-        0 0 25px
-        rgba(255, 70, 190, .15);
+        0 0 30px
+        rgba(255, 80, 190, .2);
+
 }
 
 
-.line {
+.intro-line {
 
     width: 140px;
 
     height: 2px;
 
-    background:
-        #e34cae;
-
     margin:
-        0 auto 50px;
+        0 auto 48px;
+
+    background:
+        #e84dae;
 
     box-shadow:
 
-        0 0 15px
-        #ff31b5;
+        0 0 20px
+        #ff36b7;
+
 }
 
 
-.description {
+.intro-text {
 
     color:
         #bdb3bd;
 
     font-size:
-        clamp(18px, 3vw, 25px);
+        clamp(17px, 3vw, 24px);
 
     line-height:
         1.8;
 
     margin-bottom:
-        65px;
+        60px;
+
 }
 
 
 #enterButton {
 
     width:
-        min(400px, 85vw);
+        min(400px, 86vw);
 
     height:
-        85px;
+        82px;
 
     border:
-        1px solid #ef4db9;
+        1px solid #ed55b8;
 
     border-radius:
         50px;
 
     background:
-        rgba(80, 0, 50, .35);
+        rgba(80, 0, 55, .28);
 
     color:
         white;
 
     font-size:
-        21px;
+        20px;
 
     cursor:
         pointer;
 
+    box-shadow:
+
+        0 0 30px
+        rgba(255, 0, 180, .12);
+
     transition:
         .4s;
 
-    box-shadow:
-
-        0 0 35px
-        rgba(255, 0, 170, .12);
-}
-
-
-#enterButton span {
-
-    margin-left:
-        30px;
-
-    color:
-        #ef66bd;
-
-    font-size:
-        28px;
 }
 
 
 #enterButton:hover {
 
+    transform:
+        scale(1.04);
+
     background:
-        rgba(160, 0, 100, .35);
+        rgba(130, 0, 90, .3);
 
     box-shadow:
 
-        0 0 50px
+        0 0 60px
         rgba(255, 0, 190, .3);
 
-    transform:
-        scale(1.03);
+}
+
+
+#enterButton b {
+
+    margin-left:
+        30px;
+
+    color:
+        #f268c2;
+
+    font-size:
+        27px;
+
 }
 
 
 .headphones {
 
     margin-top:
-        50px;
+        48px;
 
     color:
-        #605664;
+        #625762;
 
     font-family:
         Arial,
         sans-serif;
 
     font-size:
-        13px;
+        12px;
 
     letter-spacing:
         5px;
+
 }
 
 
-/* =========================================
+/* =====================================================
    UNIVERSO
-========================================= */
+===================================================== */
 
 #universe {
 
@@ -275,14 +299,11 @@ h1 {
     inset:
         0;
 
-    width:
-        100%;
-
-    height:
-        100%;
-
     overflow:
         hidden;
+
+    background:
+        #020106;
 
     opacity:
         0;
@@ -290,11 +311,9 @@ h1 {
     visibility:
         hidden;
 
-    background:
-        #020106;
-
     transition:
         opacity 1.5s ease;
+
 }
 
 
@@ -305,10 +324,11 @@ h1 {
 
     visibility:
         visible;
+
 }
 
 
-#galaxy {
+#galaxyCanvas {
 
     position:
         absolute;
@@ -324,86 +344,63 @@ h1 {
 
     z-index:
         1;
+
 }
 
 
-/* =========================================
-   FRASES
-========================================= */
-
-#phraseContainer {
+.ambient-light {
 
     position:
         absolute;
 
+    width:
+        70vw;
+
+    height:
+        70vw;
+
+    max-width:
+        800px;
+
+    max-height:
+        800px;
+
     left:
         50%;
 
-    bottom:
-        9%;
+    top:
+        50%;
 
     transform:
-        translateX(-50%);
+        translate(-50%, -50%);
 
-    width:
-        90%;
+    border-radius:
+        50%;
 
-    text-align:
-        center;
+    background:
+        radial-gradient(
+            circle,
+            rgba(255, 0, 180, .12),
+            transparent 68%
+        );
+
+    filter:
+        blur(35px);
 
     z-index:
-        30;
+        2;
 
     pointer-events:
         none;
+
 }
 
 
-#phrase {
+/* =====================================================
+   MENSAJES FLOTANTES
+===================================================== */
 
-    display:
-        inline-block;
-
-    color:
-        #ffd2ed;
-
-    font-size:
-        clamp(18px, 4vw, 30px);
-
-    text-shadow:
-
-        0 0 12px
-        #ff31b5,
-
-        0 0 30px
-        rgba(255, 0, 170, .5);
-
-    opacity:
-        0;
-
-    transform:
-        translateY(15px);
-
-    transition:
-        .8s;
-}
-
-
-#phrase.show {
-
-    opacity:
-        1;
-
-    transform:
-        translateY(0);
-}
-
-
-/* =========================================
-   FOTOS
-========================================= */
-
-#photos {
+#floatingMessages {
 
     position:
         absolute;
@@ -412,14 +409,113 @@ h1 {
         0;
 
     z-index:
-        20;
+        8;
 
     pointer-events:
         none;
+
+    perspective:
+        1000px;
+
 }
 
 
-.photo {
+.floating-message {
+
+    position:
+        absolute;
+
+    white-space:
+        nowrap;
+
+    color:
+        rgba(255, 198, 235, .9);
+
+    font-family:
+        Georgia,
+        serif;
+
+    text-shadow:
+
+        0 0 8px
+        #ff36b8,
+
+        0 0 25px
+        rgba(255, 0, 170, .65);
+
+    animation:
+        floatMessage
+        var(--duration)
+        ease-in-out
+        infinite alternate;
+
+    opacity:
+        var(--opacity);
+
+    transform:
+        translate3d(0,0,var(--depth));
+
+}
+
+
+@keyframes floatMessage {
+
+    0% {
+
+        transform:
+            translate3d(
+                var(--x1),
+                var(--y1),
+                var(--depth)
+            )
+            rotate(
+                var(--rotation)
+            );
+
+    }
+
+    100% {
+
+        transform:
+            translate3d(
+                var(--x2),
+                var(--y2),
+                var(--depth)
+            )
+            rotate(
+                var(--rotation)
+            );
+
+    }
+
+}
+
+
+/* =====================================================
+   FOTOS 3D
+===================================================== */
+
+#photoWorld {
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    z-index:
+        15;
+
+    perspective:
+        1200px;
+
+    pointer-events:
+        none;
+
+}
+
+
+.photo-card {
 
     position:
         absolute;
@@ -428,10 +524,10 @@ h1 {
         50%;
 
     top:
-        43%;
+        50%;
 
     width:
-        145px;
+        150px;
 
     height:
         190px;
@@ -445,31 +541,38 @@ h1 {
     background:
         linear-gradient(
             135deg,
-            #fff,
-            #ff55c7
+            #ffffff,
+            #ff42bb
         );
 
     box-shadow:
 
         0 0 20px
-        rgba(255, 40, 190, .8),
+        rgba(255, 50, 200, .85),
 
-        0 0 60px
-        rgba(255, 0, 180, .35);
-
-    overflow:
-        hidden;
+        0 0 65px
+        rgba(255, 0, 180, .4);
 
     transform-style:
         preserve-3d;
 
     transition:
-        transform 1s ease,
+        transform 1.2s cubic-bezier(
+            .2,
+            .8,
+            .2,
+            1
+        ),
+
         opacity 1s ease;
+
+    overflow:
+        hidden;
+
 }
 
 
-.photo img {
+.photo-card img {
 
     width:
         100%;
@@ -480,28 +583,163 @@ h1 {
     object-fit:
         cover;
 
+    display:
+        block;
+
     border-radius:
         14px;
 
-    display:
-        block;
 }
 
 
-/* =========================================
-   CONTROLES
-========================================= */
+/* =====================================================
+   TÍTULO CENTRAL
+===================================================== */
 
-#controls {
+.center-title {
 
     position:
         absolute;
 
-    bottom:
-        30px;
+    left:
+        50%;
+
+    top:
+        50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    z-index:
+        12;
+
+    text-align:
+        center;
+
+    pointer-events:
+        none;
+
+    opacity:
+        .8;
+
+}
+
+
+.center-small {
+
+    color:
+        rgba(255, 190, 230, .75);
+
+    font-family:
+        Arial,
+        sans-serif;
+
+    font-size:
+        clamp(11px, 2vw, 15px);
+
+    letter-spacing:
+        8px;
+
+}
+
+
+.center-name {
+
+    margin-top:
+        10px;
+
+    color:
+        rgba(255, 150, 220, .25);
+
+    font-size:
+        clamp(45px, 10vw, 100px);
+
+    letter-spacing:
+        12px;
+
+}
+
+
+/* =====================================================
+   FRASE PRINCIPAL
+===================================================== */
+
+#mainPhrase {
+
+    position:
+        absolute;
 
     left:
         50%;
+
+    bottom:
+        15%;
+
+    transform:
+        translateX(-50%);
+
+    width:
+        90%;
+
+    z-index:
+        30;
+
+    text-align:
+        center;
+
+    pointer-events:
+        none;
+
+}
+
+
+#mainPhrase span {
+
+    color:
+        #ffd0ec;
+
+    font-size:
+        clamp(18px, 4vw, 30px);
+
+    text-shadow:
+
+        0 0 12px
+        #ff27b7,
+
+        0 0 35px
+        rgba(255, 0, 170, .65);
+
+    opacity:
+        0;
+
+    transition:
+        1s;
+
+}
+
+
+#mainPhrase.show span {
+
+    opacity:
+        1;
+
+}
+
+
+/* =====================================================
+   CONTROLES
+===================================================== */
+
+.controls {
+
+    position:
+        absolute;
+
+    left:
+        50%;
+
+    bottom:
+        30px;
 
     transform:
         translateX(-50%);
@@ -513,20 +751,21 @@ h1 {
         center;
 
     gap:
-        35px;
+        30px;
 
     z-index:
-        40;
+        50;
+
 }
 
 
-#controls button {
+.controls button {
 
     width:
-        50px;
+        48px;
 
     height:
-        50px;
+        48px;
 
     border:
         1px solid
@@ -536,7 +775,7 @@ h1 {
         50%;
 
     background:
-        rgba(20, 0, 20, .7);
+        rgba(20, 0, 25, .7);
 
     color:
         white;
@@ -546,13 +785,14 @@ h1 {
 
     cursor:
         pointer;
+
 }
 
 
-#counter {
+.counter {
 
     color:
-        #d6a8c9;
+        #d7a9c9;
 
     font-family:
         Arial,
@@ -560,23 +800,35 @@ h1 {
 
     letter-spacing:
         4px;
+
 }
 
 
-/* =========================================
-   MÚSICA
-========================================= */
+.counter i {
 
-#musicButton {
+    margin:
+        0 5px;
+
+    color:
+        #694f64;
+
+}
+
+
+/* =====================================================
+   MÚSICA
+===================================================== */
+
+.music-button {
 
     position:
         absolute;
 
     top:
-        30px;
+        25px;
 
     right:
-        30px;
+        25px;
 
     width:
         60px;
@@ -592,32 +844,63 @@ h1 {
         50%;
 
     background:
-        rgba(30, 0, 30, .7);
+        rgba(20, 0, 25, .75);
 
     color:
-        #ffb7e4;
+        #ffbce5;
 
     font-size:
         28px;
 
+    z-index:
+        100;
+
     cursor:
         pointer;
 
-    z-index:
-        50;
-
     box-shadow:
 
-        0 0 25px
+        0 0 30px
         rgba(255, 0, 180, .3);
+
 }
 
 
-/* =========================================
-   MENSAJE FINAL
-========================================= */
+.music-button.playing {
 
-#finalMessage {
+    animation:
+        musicPulse 1.4s infinite;
+
+}
+
+
+@keyframes musicPulse {
+
+    0%,
+    100% {
+
+        box-shadow:
+            0 0 20px
+            rgba(255, 0, 180, .3);
+
+    }
+
+    50% {
+
+        box-shadow:
+            0 0 55px
+            rgba(255, 0, 180, .8);
+
+    }
+
+}
+
+
+/* =====================================================
+   MENSAJE FINAL
+===================================================== */
+
+#finalScene {
 
     position:
         absolute;
@@ -639,7 +922,7 @@ h1 {
         center;
 
     z-index:
-        35;
+        80;
 
     opacity:
         0;
@@ -649,10 +932,11 @@ h1 {
 
     transition:
         1.5s;
+
 }
 
 
-#finalMessage.show {
+#finalScene.show {
 
     opacity:
         1;
@@ -660,13 +944,14 @@ h1 {
     transform:
         translate(-50%, -50%)
         scale(1);
+
 }
 
 
-.final-small {
+.final-subtitle {
 
     color:
-        #b995ae;
+        #b99aad;
 
     font-family:
         Arial,
@@ -680,16 +965,17 @@ h1 {
 
     margin-bottom:
         25px;
+
 }
 
 
-.final-big {
+.final-title {
 
     color:
         #ffc4e9;
 
     font-size:
-        clamp(38px, 9vw, 85px);
+        clamp(40px, 9vw, 85px);
 
     line-height:
         1.1;
@@ -701,6 +987,7 @@ h1 {
 
         0 0 60px
         rgba(255, 0, 170, .5);
+
 }
 
 
@@ -710,44 +997,75 @@ h1 {
         30px;
 
     color:
-        #ff7bc9;
+        #ff7ac9;
 
     font-size:
-        22px;
+        23px;
+
 }
 
 
-/* =========================================
+/* =====================================================
    CELULAR
-========================================= */
+===================================================== */
 
 @media(max-width:600px) {
 
-    .small-title {
+    .intro-subtitle {
 
         letter-spacing:
             5px;
 
     }
 
-    .description {
+
+    .intro-content h1 {
+
+        font-size:
+            60px;
+
+    }
+
+
+    .intro-text {
 
         font-size:
             18px;
 
     }
 
-    .photo {
+
+    .photo-card {
 
         width:
-            110px;
+            105px;
 
         height:
-            145px;
+            140px;
 
     }
 
-    #musicButton {
+
+    .floating-message {
+
+        font-size:
+            13px;
+
+    }
+
+
+    .center-name {
+
+        font-size:
+            50px;
+
+        letter-spacing:
+            7px;
+
+    }
+
+
+    .music-button {
 
         width:
             52px;
@@ -756,11 +1074,11 @@ h1 {
             52px;
 
         top:
-            20px;
+            18px;
 
         right:
-            20px;
+            18px;
 
     }
 
-}
+    }
