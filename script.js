@@ -91,17 +91,17 @@ const finalScene =
 
 const FOTOS = [
 
-    "assets/img/foto1.jpg",
+    "assets/Img/foto1.jpg",
 
-    "assets/img/foto2.jpg",
+    "assets/Img/foto2.jpg",
 
-    "assets/img/foto3.jpg",
+    "assets/Img/foto3.jpg",
 
-    "assets/img/foto4.jpg",
+    "assets/Img/foto4.jpg",
 
-    "assets/img/foto5.jpg",
+    "assets/Img/foto5.jpg",
 
-    "assets/img/foto6.jpg"
+    "assets/Img/foto6.jpg"
 
 ];
 
