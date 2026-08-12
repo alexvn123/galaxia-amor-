@@ -7,10 +7,15 @@
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
     >
 
-    <title>Mi Universo ❤️</title>
+    <meta
+        name="theme-color"
+        content="#050208"
+    >
+
+    <title>Para Ariana · Mi Universo</title>
 
     <link
         rel="stylesheet"
@@ -19,106 +24,264 @@
 
 </head>
 
+
 <body>
 
-    <!-- =====================================
-         ESCENA 3D
-    ====================================== -->
 
-    <div id="scene"></div>
+    <!-- =================================================
+         FONDO
+    ================================================== -->
 
-
-    <!-- =====================================
-         INTERFAZ
-    ====================================== -->
-
-    <div id="interface">
+    <div class="background"></div>
 
 
-        <div class="title">
+    <!-- =================================================
+         PANTALLA DE ENTRADA
+    ================================================== -->
+
+    <section
+        id="intro"
+        class="intro"
+    >
+
+        <div class="intro-stars"></div>
+
+
+        <div class="intro-content">
+
+            <span class="eyebrow">
+                UNA HISTORIA ENTRE ESTRELLAS
+            </span>
+
 
             <h1>
-                MI UNIVERSO
+                Para Ariana
             </h1>
 
+
+            <div class="intro-line"></div>
+
+
             <p>
-                PARA ARIANA ❤️
+                Hay personas que llegan por casualidad...
+                <br>
+                y terminan convirtiéndose en nuestro universo.
             </p>
 
-        </div>
-
-
-        <!-- FRASE -->
-
-        <div id="phrase"></div>
-
-
-        <!-- BOTONES -->
-
-        <div class="controls">
 
             <button
-                id="musicButton"
-                class="button"
+                id="enterButton"
+                class="enter-button"
             >
-                ▶ MÚSICA
+
+                <span>
+                    Entrar a mi universo
+                </span>
+
+                <span class="enter-arrow">
+                    →
+                </span>
+
             </button>
 
 
-            <button
-                id="cameraButton"
-                class="button"
-            >
-                🎥 CÁMARA
-            </button>
-
-
-            <button
-                id="nextButton"
-                class="button"
-            >
-                ❤️ SIGUIENTE
-            </button>
+            <small>
+                Ponte los audífonos · Sube el volumen
+            </small>
 
         </div>
 
+    </section>
 
-        <div class="help">
 
-            Arrastra para mirar ·
-            Usa la rueda para acercarte ·
-            ❤️ Ariana ❤️
+    <!-- =================================================
+         ESCENA 3D
+    ================================================== -->
+
+    <main
+        id="scene"
+        class="scene"
+    ></main>
+
+
+    <!-- =================================================
+         INTERFAZ PRINCIPAL
+    ================================================== -->
+
+    <div
+        id="interface"
+        class="interface hidden"
+    >
+
+
+        <!-- SUPERIOR -->
+
+        <header class="topbar">
+
+            <div class="brand">
+
+                <span class="brand-dot"></span>
+
+                <span>
+                    MI UNIVERSO
+                </span>
+
+            </div>
+
+
+            <div class="counter">
+
+                <span id="photoNumber">
+                    01
+                </span>
+
+                <span class="counter-line"></span>
+
+                <span id="photoTotal">
+                    06
+                </span>
+
+            </div>
+
+        </header>
+
+
+        <!-- CENTRO -->
+
+        <section class="center-content">
+
+            <div
+                id="phrase"
+                class="phrase"
+            ></div>
+
+        </section>
+
+
+        <!-- PARTE INFERIOR -->
+
+        <footer class="bottom-bar">
+
+
+            <div class="music-info">
+
+                <div class="music-disc">
+
+                    ♪
+
+                </div>
+
+
+                <div>
+
+                    <span class="music-label">
+                        REPRODUCIENDO
+                    </span>
+
+                    <strong>
+                        Destino o Casualidad
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="controls">
+
+
+                <button
+                    id="previousButton"
+                    class="control"
+                    aria-label="Anterior"
+                >
+                    ←
+                </button>
+
+
+                <button
+                    id="musicButton"
+                    class="control play"
+                    aria-label="Música"
+                >
+                    ❚❚
+                </button>
+
+
+                <button
+                    id="nextButton"
+                    class="control"
+                    aria-label="Siguiente"
+                >
+                    →
+                </button>
+
+
+                <button
+                    id="cameraButton"
+                    class="control"
+                    aria-label="Cámara"
+                >
+                    ◉
+                </button>
+
+            </div>
+
+
+            <div class="signature">
+
+                Para ti, Ariana
+
+                <span>
+                    ♥
+                </span>
+
+            </div>
+
+
+        </footer>
+
+
+        <!-- INDICACIÓN -->
+
+        <div class="gesture">
+
+            ARRASTRA PARA EXPLORAR ·
+            RUEDA PARA ACERCAR
 
         </div>
+
 
     </div>
 
 
-    <!-- =====================================
-         MÚSICA
-    ====================================== -->
+    <!-- =================================================
+         AUDIO
+    ================================================== -->
 
     <audio
         id="music"
         src="musica/destino.mp3"
         loop
+        preload="auto"
     ></audio>
 
 
-    <!-- =====================================
+    <!-- =================================================
          THREE.JS
-    ====================================== -->
+    ================================================== -->
 
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r167/three.min.js">
     </script>
 
 
-    <!-- =====================================
-         NUESTRO JAVASCRIPT
-    ====================================== -->
+    <!-- =================================================
+         JAVASCRIPT
+    ================================================== -->
 
     <script src="script.js"></script>
+
 
 </body>
 
