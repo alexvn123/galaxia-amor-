@@ -1,1304 +1,949 @@
-// ============================================================
+// ==========================================
 // MI UNIVERSO - ARIANA
-// MOTOR 3D SIN THREE.JS
-// Canvas + CSS 3D
-// ============================================================
+// SIN THREE.JS
+// ==========================================
 
-const fotos = [
-    {
-        archivo: "imagenes/ariana1.jpg",
-        frase: "A veces una casualidad puede cambiarlo todo."
-    },
-    {
-        archivo: "imagenes/ariana2.jpg",
-        frase: "De todas las personas, tuve la suerte de encontrarte."
-    },
-    {
-        archivo: "imagenes/ariana3.jpg",
-        frase: "Quizás fue destino..."
-    },
-    {
-        archivo: "imagenes/ariana4.jpg",
-        frase: "...o quizás la casualidad más bonita."
-    },
-    {
-        archivo: "imagenes/ariana5.jpg",
-        frase: "Pero hoy sé que te elegiría una y otra vez."
-    },
-    {
-        archivo: "imagenes/ariana6.jpg",
-        frase: "Ariana, tú eres mi universo."
+document.addEventListener("DOMContentLoaded", () => {
+
+    const intro =
+        document.getElementById("intro");
+
+    const universe =
+        document.getElementById("universe");
+
+    const enterButton =
+        document.getElementById("enterButton");
+
+    const canvas =
+        document.getElementById("galaxy");
+
+    const ctx =
+        canvas.getContext("2d");
+
+    const music =
+        document.getElementById("music");
+
+    const musicButton =
+        document.getElementById("musicButton");
+
+    const phrase =
+        document.getElementById("phrase");
+
+    const photosContainer =
+        document.getElementById("photos");
+
+    const previous =
+        document.getElementById("previous");
+
+    const next =
+        document.getElementById("next");
+
+    const current =
+        document.getElementById("current");
+
+    const total =
+        document.getElementById("total");
+
+    const finalMessage =
+        document.getElementById("finalMessage");
+
+
+    // ==========================================
+    // FOTOS
+    // ==========================================
+
+    const fotos = [
+
+        {
+            src: "imagenes/ariana1.jpg",
+            frase:
+                "A veces una casualidad puede cambiarlo todo."
+        },
+
+        {
+            src: "imagenes/ariana2.jpg",
+            frase:
+                "De todas las personas, tuve la suerte de encontrarte."
+        },
+
+        {
+            src: "imagenes/ariana3.jpg",
+            frase:
+                "Quizás fue destino..."
+        },
+
+        {
+            src: "imagenes/ariana4.jpg",
+            frase:
+                "...o quizás la casualidad más bonita."
+        },
+
+        {
+            src: "imagenes/ariana5.jpg",
+            frase:
+                "Pero hoy sé que te elegiría una y otra vez."
+        },
+
+        {
+            src: "imagenes/ariana6.jpg",
+            frase:
+                "Ariana, tú eres mi universo."
+        }
+
+    ];
+
+
+    let fotoActual = 0;
+
+    total.textContent =
+        String(fotos.length).padStart(2, "0");
+
+
+    // ==========================================
+    // CANVAS
+    // ==========================================
+
+    let width = 0;
+
+    let height = 0;
+
+    let stars = [];
+
+    let particles = [];
+
+
+    function resize() {
+
+        width =
+            window.innerWidth;
+
+        height =
+            window.innerHeight;
+
+        const ratio =
+            Math.min(
+                window.devicePixelRatio || 1,
+                2
+            );
+
+
+        canvas.width =
+            width * ratio;
+
+        canvas.height =
+            height * ratio;
+
+        canvas.style.width =
+            width + "px";
+
+        canvas.style.height =
+            height + "px";
+
+
+        ctx.setTransform(
+            ratio,
+            0,
+            0,
+            ratio,
+            0,
+            0
+        );
+
+
+        crearEstrellas();
+
+        crearGalaxia();
+
     }
-];
 
 
-// ============================================================
-// ELEMENTOS
-// ============================================================
-
-const intro = document.getElementById("intro");
-const scene = document.getElementById("scene");
-const interfaceUI = document.getElementById("interface");
-
-const enterButton = document.getElementById("enterButton");
-
-const phrase = document.getElementById("phrase");
-
-const music = document.getElementById("music");
-const musicButton = document.getElementById("musicButton");
-
-const nextButton = document.getElementById("nextButton");
-const previousButton = document.getElementById("previousButton");
-
-const cameraButton = document.getElementById("cameraButton");
-
-const photoNumber = document.getElementById("photoNumber");
-const photoTotal = document.getElementById("photoTotal");
-
-const musicDisc = document.querySelector(".music-disc");
-
-
-// ============================================================
-// VARIABLES
-// ============================================================
-
-let iniciado = false;
-
-let reproduciendo = false;
-
-let indiceActual = 0;
-
-let zoom = 1;
-
-let zoomObjetivo = 1;
-
-let rotacionX = 0;
-
-let rotacionY = 0;
-
-let objetivoX = 0;
-
-let objetivoY = 0;
-
-let arrastrando = false;
-
-let ultimoX = 0;
-
-let ultimoY = 0;
-
-let cinematica = true;
-
-let intervaloFotos;
-
-
-// ============================================================
-// CANVAS
-// ============================================================
-
-const canvas = document.createElement("canvas");
-
-canvas.className = "galaxy-canvas";
-
-scene.appendChild(canvas);
-
-const ctx = canvas.getContext("2d");
-
-
-// ============================================================
-// TAMAÑO
-// ============================================================
-
-let ancho = window.innerWidth;
-
-let alto = window.innerHeight;
-
-let dpr = Math.min(
-    window.devicePixelRatio || 1,
-    2
-);
-
-
-function ajustarCanvas() {
-
-    ancho = window.innerWidth;
-
-    alto = window.innerHeight;
-
-    dpr = Math.min(
-        window.devicePixelRatio || 1,
-        2
+    window.addEventListener(
+        "resize",
+        resize
     );
 
-    canvas.width = ancho * dpr;
 
-    canvas.height = alto * dpr;
+    // ==========================================
+    // ESTRELLAS
+    // ==========================================
 
-    canvas.style.width = ancho + "px";
+    function crearEstrellas() {
 
-    canvas.style.height = alto + "px";
-
-    ctx.setTransform(
-        dpr,
-        0,
-        0,
-        dpr,
-        0,
-        0
-    );
-}
+        stars = [];
 
 
-window.addEventListener(
-    "resize",
-    ajustarCanvas
-);
-
-ajustarCanvas();
+        const cantidad =
+            width < 600
+                ? 700
+                : 1400;
 
 
-// ============================================================
-// ESTRELLAS
-// ============================================================
+        for (
+            let i = 0;
+            i < cantidad;
+            i++
+        ) {
 
-const estrellas = [];
+            stars.push({
 
-const cantidadEstrellas =
-    window.innerWidth < 600
-        ? 900
-        : 1800;
-
-
-for (
-    let i = 0;
-    i < cantidadEstrellas;
-    i++
-) {
-
-    estrellas.push({
-
-        x: Math.random() * ancho,
-
-        y: Math.random() * alto,
-
-        z: Math.random(),
-
-        tamaño:
-            Math.random() * 2 + .2,
-
-        brillo:
-            Math.random(),
-
-        velocidad:
-            Math.random() * .3 + .05
-
-    });
-
-}
-
-
-// ============================================================
-// PARTÍCULAS DE GALAXIA
-// ============================================================
-
-const particulas = [];
-
-
-for (
-    let i = 0;
-    i < 5000;
-    i++
-) {
-
-    const brazo =
-        Math.floor(
-            Math.random() * 5
-        );
-
-    const radio =
-        Math.pow(
-            Math.random(),
-            .65
-        ) * 550;
-
-    const angulo =
-
-        radio * .012 +
-
-        brazo *
-        (
-            Math.PI * 2 / 5
-        ) +
-
-        (
-            Math.random() - .5
-        ) *
-        .6;
-
-    particulas.push({
-
-        radio,
-
-        angulo,
-
-        x: 0,
-
-        y: 0,
-
-        tamaño:
-            Math.random() * 1.5 + .2,
-
-        brillo:
-            Math.random(),
-
-        tono:
-            Math.random()
-
-    });
-
-}
-
-
-// ============================================================
-// PALABRAS
-// ============================================================
-
-const palabras = [
-
-    "AMOR",
-    "TERNURA",
-    "MAGIA",
-    "PASIÓN",
-    "ALEGRÍA",
-    "LUZ",
-    "DESTINO",
-    "CASUALIDAD",
-    "SIEMPRE",
-    "TÚ Y YO",
-    "INFINITO",
-    "FELICIDAD",
-    "ALMA",
-    "CONSTELACIÓN"
-
-];
-
-
-const palabras3D = [];
-
-
-for (
-    let i = 0;
-    i < 35;
-    i++
-) {
-
-    palabras3D.push({
-
-        texto:
-            palabras[
-                Math.floor(
+                x:
                     Math.random() *
-                    palabras.length
-                )
-            ],
+                    width,
 
-        x:
-            Math.random() * ancho,
+                y:
+                    Math.random() *
+                    height,
 
-        y:
-            Math.random() * alto,
+                size:
+                    Math.random() *
+                    1.8 +
+                    .2,
 
-        profundidad:
-            Math.random(),
+                speed:
+                    Math.random() *
+                    .5 +
+                    .1,
 
-        velocidad:
-            Math.random() * .3 + .1,
+                alpha:
+                    Math.random()
 
-        fase:
-            Math.random() * Math.PI * 2
+            });
 
-    });
+        }
 
-}
+    }
 
 
-// ============================================================
-// FOTOS
-// ============================================================
+    // ==========================================
+    // GALAXIA
+    // ==========================================
 
-const fotosDOM = [];
+    function crearGalaxia() {
 
-function crearFotos() {
+        particles = [];
 
-    fotosDOM.length = 0;
 
-    document
-        .querySelectorAll(".photo-card")
-        .forEach(
-            elemento => elemento.remove()
+        for (
+            let i = 0;
+            i < 4500;
+            i++
+        ) {
+
+            const angle =
+                Math.random() *
+                Math.PI *
+                2;
+
+
+            const radius =
+                Math.sqrt(
+                    Math.random()
+                ) * 550;
+
+
+            particles.push({
+
+                angle:
+                    angle,
+
+                radius:
+                    radius,
+
+                size:
+                    Math.random() *
+                    1.8 +
+                    .2,
+
+                alpha:
+                    Math.random(),
+
+                speed:
+                    .0001 +
+                    Math.random() *
+                    .0004
+
+            });
+
+        }
+
+    }
+
+
+    // ==========================================
+    // DIBUJAR
+    // ==========================================
+
+    let tiempo = 0;
+
+
+    function render() {
+
+        tiempo += .01;
+
+
+        ctx.clearRect(
+            0,
+            0,
+            width,
+            height
         );
 
 
-    fotos.forEach(
-        (foto, index) => {
+        // --------------------------
+        // FONDO
+        // --------------------------
 
-            const tarjeta =
-                document.createElement(
-                    "div"
-                );
+        const fondo =
+            ctx.createRadialGradient(
 
-            tarjeta.className =
-                "photo-card";
+                width / 2,
+                height / 2,
+                0,
 
+                width / 2,
+                height / 2,
+                Math.max(
+                    width,
+                    height
+                )
 
-            const imagen =
-                document.createElement(
-                    "img"
-                );
-
-
-            imagen.src =
-                foto.archivo;
-
-
-            imagen.alt =
-                "Foto de Ariana";
-
-
-            imagen.loading =
-                "eager";
-
-
-            tarjeta.appendChild(
-                imagen
             );
 
 
-            scene.appendChild(
-                tarjeta
-            );
+        fondo.addColorStop(
+            0,
+            "#16051b"
+        );
 
 
-            const angulo =
-                index *
-                (
-                    Math.PI * 2 /
-                    fotos.length
+        fondo.addColorStop(
+            .4,
+            "#07020d"
+        );
+
+
+        fondo.addColorStop(
+            1,
+            "#000000"
+        );
+
+
+        ctx.fillStyle =
+            fondo;
+
+
+        ctx.fillRect(
+            0,
+            0,
+            width,
+            height
+        );
+
+
+        // --------------------------
+        // ESTRELLAS
+        // --------------------------
+
+        stars.forEach(
+            star => {
+
+                star.y +=
+                    star.speed;
+
+
+                if (
+                    star.y >
+                    height
+                ) {
+
+                    star.y =
+                        0;
+
+                }
+
+
+                const brillo =
+
+                    .4 +
+
+                    Math.sin(
+                        tiempo * 3 +
+                        star.alpha * 20
+                    ) *
+                    .3;
+
+
+                ctx.globalAlpha =
+                    brillo;
+
+
+                ctx.beginPath();
+
+
+                ctx.arc(
+
+                    star.x,
+
+                    star.y,
+
+                    star.size,
+
+                    0,
+                    Math.PI * 2
+
                 );
 
 
-            const radio = 230;
+                ctx.fillStyle =
+                    "#ffffff";
 
 
-            tarjeta.dataset.x =
-                Math.cos(angulo) *
-                radio;
+                ctx.fill();
+
+            }
+        );
 
 
-            tarjeta.dataset.y =
-                Math.sin(angulo) *
-                110;
+        // --------------------------
+        // GALAXIA
+        // --------------------------
+
+        const cx =
+            width / 2;
+
+        const cy =
+            height / 2;
 
 
-            tarjeta.dataset.z =
-                Math.sin(angulo) *
-                radio;
+        particles.forEach(
+            p => {
+
+                const a =
+                    p.angle +
+                    tiempo *
+                    p.speed *
+                    100;
 
 
-            tarjeta.dataset.angulo =
-                angulo;
+                const r =
+                    p.radius;
 
 
-            fotosDOM.push(
-                tarjeta
+                const x =
+                    cx +
+                    Math.cos(a) *
+                    r;
+
+
+                const y =
+                    cy +
+                    Math.sin(a) *
+                    r *
+                    .38;
+
+
+                const alpha =
+
+                    .15 +
+
+                    (
+                        1 -
+                        r / 550
+                    ) *
+                    .7;
+
+
+                ctx.globalAlpha =
+                    alpha;
+
+
+                ctx.beginPath();
+
+
+                ctx.arc(
+
+                    x,
+
+                    y,
+
+                    p.size,
+
+                    0,
+                    Math.PI * 2
+
+                );
+
+
+                ctx.fillStyle =
+
+                    Math.random() > .5
+                        ? "#ff43c7"
+                        : "#b47cff";
+
+
+                ctx.fill();
+
+            }
+        );
+
+
+        // --------------------------
+        // CORAZÓN
+        // --------------------------
+
+        dibujarCorazon();
+
+
+        ctx.globalAlpha = 1;
+
+
+        requestAnimationFrame(
+            render
+        );
+
+    }
+
+
+    // ==========================================
+    // CORAZÓN
+    // ==========================================
+
+    function dibujarCorazon() {
+
+        const cx =
+            width / 2;
+
+
+        const cy =
+            height * .53;
+
+
+        const escala =
+            Math.min(
+                width,
+                height
+            ) *
+            .013;
+
+
+        for (
+            let i = 0;
+            i < 1100;
+            i++
+        ) {
+
+            const t =
+                Math.random() *
+                Math.PI *
+                2;
+
+
+            const x =
+                16 *
+                Math.pow(
+                    Math.sin(t),
+                    3
+                );
+
+
+            const y =
+
+                13 *
+                Math.cos(t)
+
+                -
+
+                5 *
+                Math.cos(2 * t)
+
+                -
+
+                2 *
+                Math.cos(3 * t)
+
+                -
+
+                Math.cos(4 * t);
+
+
+            const dispersion =
+                Math.random() *
+                1.15;
+
+
+            ctx.globalAlpha =
+                .3 +
+                Math.random() *
+                .7;
+
+
+            ctx.beginPath();
+
+
+            ctx.arc(
+
+                cx +
+                x *
+                escala *
+                dispersion,
+
+                cy -
+                y *
+                escala *
+                dispersion,
+
+                Math.random() *
+                2.5 +
+                .5,
+
+                0,
+                Math.PI * 2
+
             );
+
+
+            ctx.fillStyle =
+
+                Math.random() > .3
+                    ? "#ff31bd"
+                    : "#ffd0ed";
+
+
+            ctx.fill();
+
+        }
+
+    }
+
+
+    // ==========================================
+    // CREAR FOTOS
+    // ==========================================
+
+    function crearFotos() {
+
+        photosContainer.innerHTML = "";
+
+
+        fotos.forEach(
+            (foto, index) => {
+
+                const div =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                div.className =
+                    "photo";
+
+
+                const img =
+                    document.createElement(
+                        "img"
+                    );
+
+
+                img.src =
+                    foto.src;
+
+
+                img.alt =
+                    "Ariana";
+
+
+                // Si no encuentra
+                // la imagen NO rompe
+                // la galaxia.
+
+                img.onerror =
+                    () => {
+
+                        img.style.display =
+                            "none";
+
+
+                        div.style.background =
+                            "linear-gradient(135deg,#ff4fba,#30102c)";
+
+                    };
+
+
+                div.appendChild(
+                    img
+                );
+
+
+                photosContainer.appendChild(
+                    div
+                );
+
+            }
+        );
+
+    }
+
+
+    // ==========================================
+    // POSICIONAR FOTOS
+    // ==========================================
+
+    function actualizarFotos() {
+
+        const elementos =
+            document.querySelectorAll(
+                ".photo"
+            );
+
+
+        elementos.forEach(
+            (elemento, index) => {
+
+                const diferencia =
+                    index -
+                    fotoActual;
+
+
+                const x =
+                    diferencia *
+                    180;
+
+
+                const y =
+                    Math.abs(
+                        diferencia
+                    ) *
+                    30;
+
+
+                const z =
+                    Math.abs(
+                        diferencia
+                    ) *
+                    -150;
+
+
+                const escala =
+
+                    diferencia === 0
+                        ? 1.2
+                        : .7;
+
+
+                const opacidad =
+
+                    Math.abs(
+                        diferencia
+                    ) > 2
+                        ? 0
+                        : 1;
+
+
+                elemento.style.transform =
+
+                    `translate3d(
+                        calc(-50% + ${x}px),
+                        calc(-50% + ${y}px),
+                        ${z}px
+                    )
+                    scale(${escala})`;
+
+
+                elemento.style.opacity =
+                    opacidad;
+
+            }
+        );
+
+
+        current.textContent =
+            String(
+                fotoActual + 1
+            ).padStart(
+                2,
+                "0"
+            );
+
+
+        phrase.classList.remove(
+            "show"
+        );
+
+
+        setTimeout(
+            () => {
+
+                phrase.textContent =
+                    fotos[
+                        fotoActual
+                    ].frase;
+
+
+                phrase.classList.add(
+                    "show"
+                );
+
+            },
+            200
+        );
+
+    }
+
+
+    // ==========================================
+    // ENTRAR
+    // ==========================================
+
+    enterButton.addEventListener(
+        "click",
+        () => {
+
+            console.log(
+                "ENTRANDO AL UNIVERSO..."
+            );
+
+
+            intro.classList.add(
+                "hide"
+            );
+
+
+            universe.classList.add(
+                "show"
+            );
+
+
+            crearFotos();
+
+
+            actualizarFotos();
+
+
+            // Intentar música
+
+            music.volume =
+                .65;
+
+
+            music.play()
+                .then(
+                    () => {
+
+                        musicButton.textContent =
+                            "❚❚";
+
+                    }
+                )
+                .catch(
+                    error => {
+
+                        console.log(
+                            "Audio pendiente:",
+                            error
+                        );
+
+                    }
+                );
 
         }
     );
 
-}
 
+    // ==========================================
+    // SIGUIENTE
+    // ==========================================
 
-crearFotos();
+    next.addEventListener(
+        "click",
+        () => {
 
-
-// ============================================================
-// ESTILO DINÁMICO
-// ============================================================
-
-function aplicarEstilos3D() {
-
-    const centroX =
-        ancho / 2;
-
-    const centroY =
-        alto / 2;
-
-
-    fotosDOM.forEach(
-        (tarjeta, index) => {
-
-            const x =
-                parseFloat(
-                    tarjeta.dataset.x
-                );
-
-            const y =
-                parseFloat(
-                    tarjeta.dataset.y
-                );
-
-            const z =
-                parseFloat(
-                    tarjeta.dataset.z
-                );
-
-
-            const movimiento =
-                Math.sin(
-                    Date.now() * .0005 +
-                    index
-                ) * 8;
-
-
-            const profundidad =
-                z + 500;
-
-
-            const escala =
-                Math.max(
-                    .55,
-                    Math.min(
-                        1.25,
-                        1 +
-                        z / 1000
-                    )
-                );
-
-
-            const posicionX =
-                centroX +
-                x +
-                objetivoX;
-
-
-            const posicionY =
-                centroY +
-                y +
-                movimiento +
-                objetivoY;
-
-
-            tarjeta.style.transform =
-
-                `translate3d(
-                    ${posicionX}px,
-                    ${posicionY}px,
-                    ${profundidad}px
-                )
-                translate(-50%, -50%)
-                scale(${escala * zoom})
-                rotateY(${rotacionY * .2}deg)
-                rotateX(${rotacionX * .2}deg)`;
-
-
-            tarjeta.style.zIndex =
-                Math.round(
-                    z + 1000
-                );
-
+            fotoActual++;
 
             if (
-                index === indiceActual
+                fotoActual >=
+                fotos.length
             ) {
 
-                tarjeta.classList.add(
-                    "selected"
-                );
+                fotoActual = 0;
+
+            }
+
+
+            actualizarFotos();
+
+        }
+    );
+
+
+    // ==========================================
+    // ANTERIOR
+    // ==========================================
+
+    previous.addEventListener(
+        "click",
+        () => {
+
+            fotoActual--;
+
+            if (
+                fotoActual < 0
+            ) {
+
+                fotoActual =
+                    fotos.length - 1;
+
+            }
+
+
+            actualizarFotos();
+
+        }
+    );
+
+
+    // ==========================================
+    // MÚSICA
+    // ==========================================
+
+    musicButton.addEventListener(
+        "click",
+        () => {
+
+            if (
+                music.paused
+            ) {
+
+                music.play()
+                    .then(
+                        () => {
+
+                            musicButton.textContent =
+                                "❚❚";
+
+                        }
+                    );
 
             }
 
             else {
 
-                tarjeta.classList.remove(
-                    "selected"
-                );
+                music.pause();
+
+                musicButton.textContent =
+                    "♪";
 
             }
 
         }
     );
 
-}
 
+    // ==========================================
+    // INICIAR
+    // ==========================================
 
-// ============================================================
-// CSS NECESARIO PARA LAS FOTOS
-// ============================================================
+    resize();
 
-const estilo =
-    document.createElement("style");
+    render();
 
-
-estilo.textContent = `
-
-.scene {
-
-    perspective: 1200px;
-
-    overflow: hidden;
-
-    background:
-
-        radial-gradient(
-            circle at center,
-            rgba(100,0,90,.18),
-            transparent 40%
-        ),
-
-        #020106;
-
-}
-
-.galaxy-canvas {
-
-    position: absolute;
-
-    inset: 0;
-
-    width: 100%;
-
-    height: 100%;
-
-    z-index: 1;
-
-}
-
-.photo-card {
-
-    position: absolute;
-
-    left: 0;
-
-    top: 0;
-
-    width: 150px;
-
-    height: 190px;
-
-    padding: 6px;
-
-    border-radius: 18px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255,255,255,.95),
-            rgba(255,100,200,.7)
-        );
-
-    box-shadow:
-
-        0 0 15px
-        rgba(255,50,200,.7),
-
-        0 0 50px
-        rgba(255,0,180,.35);
-
-    transform-style: preserve-3d;
-
-    transition:
-        box-shadow .5s ease;
-
-    overflow: hidden;
-
-    z-index: 5;
-
-}
-
-.photo-card img {
-
-    width: 100%;
-
-    height: 100%;
-
-    object-fit: cover;
-
-    border-radius: 13px;
-
-    display: block;
-
-}
-
-.photo-card.selected {
-
-    box-shadow:
-
-        0 0 20px
-        #ff3ac0,
-
-        0 0 60px
-        rgba(255,0,190,.8),
-
-        0 0 120px
-        rgba(255,0,150,.35);
-
-}
-
-@media(max-width:600px) {
-
-    .photo-card {
-
-        width: 115px;
-
-        height: 145px;
-
-    }
-
-}
-
-`;
-
-
-document.head.appendChild(
-    estilo
-);
-
-
-// ============================================================
-// CORAZÓN DE PARTÍCULAS
-// ============================================================
-
-function puntoCorazon(t) {
-
-    const x =
-        16 *
-        Math.pow(
-            Math.sin(t),
-            3
-        );
-
-
-    const y =
-
-        13 *
-        Math.cos(t)
-
-        -
-
-        5 *
-        Math.cos(2 * t)
-
-        -
-
-        2 *
-        Math.cos(3 * t)
-
-        -
-
-        Math.cos(4 * t);
-
-
-    return {
-        x,
-        y
-    };
-
-}
-
-
-// ============================================================
-// DIBUJAR GALAXIA
-// ============================================================
-
-function dibujar() {
-
-    const tiempo =
-        Date.now() * .001;
-
-
-    ctx.clearRect(
-        0,
-        0,
-        ancho,
-        alto
-    );
-
-
-    // --------------------------------------------
-    // FONDO
-    // --------------------------------------------
-
-    const gradiente =
-        ctx.createRadialGradient(
-
-            ancho / 2,
-            alto / 2,
-            0,
-
-            ancho / 2,
-            alto / 2,
-            Math.max(
-                ancho,
-                alto
-            ) * .7
-
-        );
-
-
-    gradiente.addColorStop(
-        0,
-        "rgba(70,0,65,.35)"
-    );
-
-
-    gradiente.addColorStop(
-        .45,
-        "rgba(20,0,30,.25)"
-    );
-
-
-    gradiente.addColorStop(
-        1,
-        "rgba(0,0,0,1)"
-    );
-
-
-    ctx.fillStyle =
-        gradiente;
-
-
-    ctx.fillRect(
-        0,
-        0,
-        ancho,
-        alto
-    );
-
-
-    // --------------------------------------------
-    // ESTRELLAS
-    // --------------------------------------------
-
-    estrellas.forEach(
-        estrella => {
-
-            estrella.y +=
-                estrella.velocidad;
-
-
-            if (
-                estrella.y > alto
-            ) {
-
-                estrella.y = 0;
-
-            }
-
-
-            const parpadeo =
-
-                .45 +
-
-                Math.sin(
-                    tiempo * 2 +
-                    estrella.brillo * 20
-                ) *
-                .35;
-
-
-            ctx.globalAlpha =
-                parpadeo;
-
-
-            ctx.beginPath();
-
-
-            ctx.arc(
-
-                estrella.x,
-
-                estrella.y,
-
-                estrella.tamaño *
-                estrella.z,
-
-                0,
-                Math.PI * 2
-
-            );
-
-
-            ctx.fillStyle =
-                estrella.z > .7
-                    ? "#ffffff"
-                    : "#ff9de4";
-
-
-            ctx.fill();
-
-        }
-    );
-
-
-    ctx.globalAlpha = 1;
-
-
-    // --------------------------------------------
-    // GALAXIA
-    // --------------------------------------------
-
-    const centroX =
-        ancho / 2 +
-        objetivoX * .15;
-
-
-    const centroY =
-        alto / 2 +
-        objetivoY * .15;
-
-
-    particulas.forEach(
-        particula => {
-
-            const angulo =
-
-                particula.angulo +
-                tiempo * .06;
-
-
-            const radio =
-                particula.radio;
-
-
-            const x =
-
-                centroX +
-
-                Math.cos(angulo) *
-                radio *
-                .55;
-
-
-            const y =
-
-                centroY +
-
-                Math.sin(angulo) *
-                radio *
-                .22;
-
-
-            const tamaño =
-
-                particula.tamaño *
-                (
-                    .6 +
-                    particula.radio / 550
-                );
-
-
-            ctx.globalAlpha =
-
-                .2 +
-
-                Math.sin(
-                    tiempo * 2 +
-                    particula.brillo * 10
-                ) *
-                .2;
-
-
-            ctx.beginPath();
-
-
-            ctx.arc(
-
-                x,
-
-                y,
-
-                tamaño,
-
-                0,
-                Math.PI * 2
-
-            );
-
-
-            ctx.fillStyle =
-
-                particula.tono > .5
-                    ? "#ff4fc7"
-                    : "#a97cff";
-
-
-            ctx.fill();
-
-        }
-    );
-
-
-    ctx.globalAlpha = 1;
-
-
-    // --------------------------------------------
-    // CORAZÓN
-    // --------------------------------------------
-
-    const escala =
-        Math.min(
-            ancho,
-            alto
-        ) * .014;
-
-
-    const corazonX =
-        ancho / 2 +
-        objetivoX * .25;
-
-
-    const corazonY =
-        alto / 2 +
-        50 +
-        objetivoY * .25;
-
-
-    for (
-        let i = 0;
-        i < 900;
-        i++
-    ) {
-
-        const t =
-            Math.random() *
-            Math.PI *
-            2;
-
-
-        const punto =
-            puntoCorazon(t);
-
-
-        const dispersión =
-            Math.random() *
-            1.2;
-
-
-        const x =
-
-            corazonX +
-
-            punto.x *
-            escala *
-
-            (
-                1 +
-                dispersión *
-                .08
-            );
-
-
-        const y =
-
-            corazonY -
-
-            punto.y *
-            escala *
-
-            (
-                1 +
-                dispersión *
-                .08
-            );
-
-
-        ctx.globalAlpha =
-
-            .25 +
-            Math.random() *
-            .65;
-
-
-        ctx.beginPath();
-
-
-        ctx.arc(
-
-            x,
-
-            y,
-
-            Math.random() *
-            2.5 +
-
-            .4,
-
-            0,
-            Math.PI * 2
-
-        );
-
-
-        ctx.fillStyle =
-            Math.random() > .25
-                ? "#ff42c4"
-                : "#ffd5f3";
-
-
-        ctx.fill();
-
-    }
-
-
-    ctx.globalAlpha = 1;
-
-
-    // --------------------------------------------
-    // BRILLO CENTRAL
-    // --------------------------------------------
-
-    const brillo =
-        ctx.createRadialGradient(
-
-            corazonX,
-            corazonY,
-            0,
-
-            corazonX,
-            corazonY,
-            180
-
-        );
-
-
-    brillo.addColorStop(
-        0,
-        "rgba(255,30,190,.12)"
-    );
-
-
-    brillo.addColorStop(
-        1,
-        "rgba(255,0,150,0)"
-    );
-
-
-    ctx.fillStyle =
-        brillo;
-
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-        corazonX,
-        corazonY,
-        180,
-        0,
-        Math.PI * 2
-    );
-
-
-    ctx.fill();
-
-
-    // --------------------------------------------
-    // PALABRAS
-    // --------------------------------------------
-
-    palabras3D.forEach(
-        palabra => {
-
-            palabra.y +=
-                palabra.velocidad;
-
-
-            if (
-                palabra.y >
-                alto + 50
-            ) {
-
-                palabra.y =
-                    -50;
-
-            }
-
-
-            const escalaTexto =
-
-                .5 +
-
-                palabra.profundidad *
-                .8;
-
-
-            ctx.globalAlpha =
-
-                .25 +
-
-                palabra.profundidad *
-                .55;
-
-
-            ctx.font =
-
-                `${12 * escalaTexto}px Georgia`;
-
-
-            ctx.textAlign =
-                "center";
-
-
-            ctx.fillStyle =
-                "#ffc5ec";
-
-
-            ctx.shadowColor =
-                "#ff20b8";
-
-
-            ctx.shadowBlur =
-                12;
-
-
-            ctx.fillText(
-
-                palabra.texto,
-
-                palabra.x,
-
-                palabra.y +
-                Math.sin(
-                    tiempo +
-                    palabra.fase
-                ) *
-                5
-
-            );
-
-
-            ctx.shadowBlur = 0;
-
-        }
-    );
-
-
-    ctx.globalAlpha = 1;
-
-
-    aplicarEstilos3D();
-
-
-    requestAnimationFrame(
-        dibujar
-    );
-
-}
-
-
-dibujar();
-
-
-// ============================================================
-// MOSTRAR FRASE
-// ============================================================
-
-function mostrarFoto(
-    numero
-) {
-
-    indiceActual =
-
-        (
-            numero +
-            fotos.length
-        ) %
-        fotos.length;
-
-
-    photoNumber.textContent =
-
-        String(
-            indiceActual + 1
-        ).padStart(
-            2,
-            "0"
-        );
-
-
-    photoTotal.textContent =
-
-        String(
-            fotos.length
-        ).padStart(
-            2,
-            "0"
-        );
-
-
-    phrase.classList.remove(
-        "show"
-    );
-
-
-    setTimeout(
-        () => {
-
-            phrase.textContent =
-                fotos[
-                    indiceActual
-                ].frase;
-
-
-            phrase.classList.add(
-                "show"
-            );
-
-        },
-        300
-    );
-
-
-    // --------------------------------------------
-    // ACERCAMIENTO
-    // --------------------------------------------
-
-    zoomObjetivo =
-        1.35;
-
-
-    setTimeout(
-        () => {
-
-            zoomObjetivo =
-                1;
-
-        },
-        3500
-    );
-
-}
-
-
-// ============================================================
-// ENTRAR
-// ============================================================
-
-enterButton.addEventListener(
-    "click",
-    () => {
-
-        if (
-            iniciado
-        ) return;
-
-
-        iniciado = true;
-
-
-        // ----------------------------------------
-        // OCULTAR INTRO
-        // ----------------------------------------
-
-        intro.classList.add(
-   
+});
