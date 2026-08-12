@@ -1,45 +1,34 @@
 // ============================================================
-// MI UNIVERSO
-// PARA ARIANA ❤️
-// ============================================================
-
-
-// ============================================================
-// CONFIGURACIÓN
+// MI UNIVERSO - ARIANA
+// MOTOR 3D SIN THREE.JS
+// Canvas + CSS 3D
 // ============================================================
 
 const fotos = [
-
     {
         archivo: "imagenes/ariana1.jpg",
         frase: "A veces una casualidad puede cambiarlo todo."
     },
-
     {
         archivo: "imagenes/ariana2.jpg",
         frase: "De todas las personas, tuve la suerte de encontrarte."
     },
-
     {
         archivo: "imagenes/ariana3.jpg",
         frase: "Quizás fue destino..."
     },
-
     {
         archivo: "imagenes/ariana4.jpg",
         frase: "...o quizás la casualidad más bonita."
     },
-
     {
         archivo: "imagenes/ariana5.jpg",
         frase: "Pero hoy sé que te elegiría una y otra vez."
     },
-
     {
         archivo: "imagenes/ariana6.jpg",
         frase: "Ariana, tú eres mi universo."
     }
-
 ];
 
 
@@ -47,726 +36,226 @@ const fotos = [
 // ELEMENTOS
 // ============================================================
 
-const sceneContainer =
-    document.getElementById("scene");
+const intro = document.getElementById("intro");
+const scene = document.getElementById("scene");
+const interfaceUI = document.getElementById("interface");
 
-const intro =
-    document.getElementById("intro");
+const enterButton = document.getElementById("enterButton");
 
-const interfaceUI =
-    document.getElementById("interface");
+const phrase = document.getElementById("phrase");
 
-const enterButton =
-    document.getElementById("enterButton");
+const music = document.getElementById("music");
+const musicButton = document.getElementById("musicButton");
 
-const phrase =
-    document.getElementById("phrase");
+const nextButton = document.getElementById("nextButton");
+const previousButton = document.getElementById("previousButton");
 
-const music =
-    document.getElementById("music");
+const cameraButton = document.getElementById("cameraButton");
 
-const musicButton =
-    document.getElementById("musicButton");
+const photoNumber = document.getElementById("photoNumber");
+const photoTotal = document.getElementById("photoTotal");
 
-const cameraButton =
-    document.getElementById("cameraButton");
-
-const nextButton =
-    document.getElementById("nextButton");
-
-const previousButton =
-    document.getElementById("previousButton");
-
-const photoNumber =
-    document.getElementById("photoNumber");
-
-const photoTotal =
-    document.getElementById("photoTotal");
-
-const musicDisc =
-    document.querySelector(".music-disc");
+const musicDisc = document.querySelector(".music-disc");
 
 
 // ============================================================
-// THREE.JS
+// VARIABLES
 // ============================================================
 
-const scene =
-    new THREE.Scene();
+let iniciado = false;
+
+let reproduciendo = false;
+
+let indiceActual = 0;
+
+let zoom = 1;
+
+let zoomObjetivo = 1;
+
+let rotacionX = 0;
+
+let rotacionY = 0;
+
+let objetivoX = 0;
+
+let objetivoY = 0;
+
+let arrastrando = false;
+
+let ultimoX = 0;
+
+let ultimoY = 0;
+
+let cinematica = true;
+
+let intervaloFotos;
 
 
-const camera =
-    new THREE.PerspectiveCamera(
+// ============================================================
+// CANVAS
+// ============================================================
 
-        60,
+const canvas = document.createElement("canvas");
 
-        window.innerWidth /
-        window.innerHeight,
+canvas.className = "galaxy-canvas";
 
-        .1,
+scene.appendChild(canvas);
 
-        2000
+const ctx = canvas.getContext("2d");
 
+
+// ============================================================
+// TAMAÑO
+// ============================================================
+
+let ancho = window.innerWidth;
+
+let alto = window.innerHeight;
+
+let dpr = Math.min(
+    window.devicePixelRatio || 1,
+    2
+);
+
+
+function ajustarCanvas() {
+
+    ancho = window.innerWidth;
+
+    alto = window.innerHeight;
+
+    dpr = Math.min(
+        window.devicePixelRatio || 1,
+        2
     );
 
+    canvas.width = ancho * dpr;
 
-camera.position.set(
-    0,
-    0,
-    60
+    canvas.height = alto * dpr;
+
+    canvas.style.width = ancho + "px";
+
+    canvas.style.height = alto + "px";
+
+    ctx.setTransform(
+        dpr,
+        0,
+        0,
+        dpr,
+        0,
+        0
+    );
+}
+
+
+window.addEventListener(
+    "resize",
+    ajustarCanvas
 );
 
-
-const renderer =
-    new THREE.WebGLRenderer({
-
-        antialias: true,
-
-        alpha: true,
-
-        powerPreference:
-            "high-performance"
-
-    });
-
-
-renderer.setPixelRatio(
-
-    Math.min(
-        window.devicePixelRatio,
-        2
-    )
-
-);
-
-
-renderer.setSize(
-    window.innerWidth,
-    window.innerHeight
-);
-
-
-sceneContainer.appendChild(
-    renderer.domElement
-);
-
-
-// ============================================================
-// GRUPOS
-// ============================================================
-
-const universe =
-    new THREE.Group();
-
-
-const galaxyGroup =
-    new THREE.Group();
-
-
-const heartGroup =
-    new THREE.Group();
-
-
-const photosGroup =
-    new THREE.Group();
-
-
-const wordsGroup =
-    new THREE.Group();
-
-
-universe.add(
-    galaxyGroup,
-    heartGroup,
-    photosGroup,
-    wordsGroup
-);
-
-
-scene.add(
-    universe
-);
+ajustarCanvas();
 
 
 // ============================================================
 // ESTRELLAS
 // ============================================================
 
-function crearEstrellas() {
+const estrellas = [];
+
+const cantidadEstrellas =
+    window.innerWidth < 600
+        ? 900
+        : 1800;
 
 
-    const geometry =
-        new THREE.BufferGeometry();
+for (
+    let i = 0;
+    i < cantidadEstrellas;
+    i++
+) {
 
+    estrellas.push({
 
-    const positions = [];
+        x: Math.random() * ancho,
 
-    const colors = [];
+        y: Math.random() * alto,
 
+        z: Math.random(),
 
-    for (
-        let i = 0;
-        i < 17000;
-        i++
-    ) {
+        tamaño:
+            Math.random() * 2 + .2,
 
+        brillo:
+            Math.random(),
 
-        const radius =
-            40 +
-            Math.random() *
-            300;
+        velocidad:
+            Math.random() * .3 + .05
 
-
-        const theta =
-            Math.random() *
-            Math.PI *
-            2;
-
-
-        const phi =
-            Math.acos(
-                2 *
-                Math.random()
-                - 1
-            );
-
-
-        const x =
-
-            radius *
-            Math.sin(phi) *
-            Math.cos(theta);
-
-
-        const y =
-
-            radius *
-            Math.sin(phi) *
-            Math.sin(theta);
-
-
-        const z =
-
-            radius *
-            Math.cos(phi);
-
-
-        positions.push(
-            x,
-            y,
-            z
-        );
-
-
-        const color =
-            new THREE.Color();
-
-
-        const r =
-            Math.random();
-
-
-        if (
-            r < .7
-        ) {
-
-            color.set(
-                0xffffff
-            );
-
-        }
-
-        else if (
-            r < .88
-        ) {
-
-            color.set(
-                0xff9bdd
-            );
-
-        }
-
-        else {
-
-            color.set(
-                0xa6cfff
-            );
-
-        }
-
-
-        colors.push(
-            color.r,
-            color.g,
-            color.b
-        );
-
-    }
-
-
-    geometry.setAttribute(
-
-        "position",
-
-        new THREE.Float32BufferAttribute(
-            positions,
-            3
-        )
-
-    );
-
-
-    geometry.setAttribute(
-
-        "color",
-
-        new THREE.Float32BufferAttribute(
-            colors,
-            3
-        )
-
-    );
-
-
-    const material =
-        new THREE.PointsMaterial({
-
-            size: .55,
-
-            vertexColors: true,
-
-            transparent: true,
-
-            opacity: .85,
-
-            depthWrite: false,
-
-            blending:
-                THREE.AdditiveBlending
-
-        });
-
-
-    return new THREE.Points(
-        geometry,
-        material
-    );
+    });
 
 }
 
 
-const stars =
-    crearEstrellas();
-
-
-scene.add(
-    stars
-);
-
-
 // ============================================================
-// GALAXIA
+// PARTÍCULAS DE GALAXIA
 // ============================================================
 
-function crearGalaxia() {
+const particulas = [];
 
 
-    const geometry =
-        new THREE.BufferGeometry();
+for (
+    let i = 0;
+    i < 5000;
+    i++
+) {
 
-
-    const positions = [];
-
-    const colors = [];
-
-
-    const arms =
-        5;
-
-
-    for (
-        let i = 0;
-        i < 13000;
-        i++
-    ) {
-
-
-        const radius =
-            Math.pow(
-                Math.random(),
-                .7
-            ) *
-            70;
-
-
-        const arm =
-            Math.floor(
-                Math.random() *
-                arms
-            );
-
-
-        const angle =
-
-            radius *
-            .14
-
-            +
-
-            arm *
-            (
-                Math.PI *
-                2 /
-                arms
-            )
-
-            +
-
-            (
-                Math.random()
-                - .5
-            ) *
-            .65;
-
-
-        const spread =
-            radius *
-            .025;
-
-
-        const x =
-
-            Math.cos(angle) *
-            radius
-
-            +
-
-            (
-                Math.random()
-                - .5
-            ) *
-            spread;
-
-
-        const z =
-
-            Math.sin(angle) *
-            radius
-
-            +
-
-            (
-                Math.random()
-                - .5
-            ) *
-            spread;
-
-
-        const y =
-
-            (
-                Math.random()
-                - .5
-            ) *
-
-            (
-                2 +
-                radius *
-                .04
-            );
-
-
-        positions.push(
-            x,
-            y,
-            z
+    const brazo =
+        Math.floor(
+            Math.random() * 5
         );
 
+    const radio =
+        Math.pow(
+            Math.random(),
+            .65
+        ) * 550;
 
-        const color =
-            new THREE.Color();
+    const angulo =
 
+        radio * .012 +
 
-        if (
-            Math.random() >
-            .5
-        ) {
+        brazo *
+        (
+            Math.PI * 2 / 5
+        ) +
 
-            color.set(
-                0xff4bc5
-            );
+        (
+            Math.random() - .5
+        ) *
+        .6;
 
-        }
+    particulas.push({
 
-        else {
+        radio,
 
-            color.set(
-                0x9c6cff
-            );
+        angulo,
 
-        }
+        x: 0,
 
+        y: 0,
 
-        colors.push(
-            color.r,
-            color.g,
-            color.b
-        );
+        tamaño:
+            Math.random() * 1.5 + .2,
 
-    }
+        brillo:
+            Math.random(),
 
+        tono:
+            Math.random()
 
-    geometry.setAttribute(
-
-        "position",
-
-        new THREE.Float32BufferAttribute(
-            positions,
-            3
-        )
-
-    );
-
-
-    geometry.setAttribute(
-
-        "color",
-
-        new THREE.Float32BufferAttribute(
-            colors,
-            3
-        )
-
-    );
-
-
-    const material =
-        new THREE.PointsMaterial({
-
-            size: .15,
-
-            vertexColors: true,
-
-            transparent: true,
-
-            opacity: .75,
-
-            depthWrite: false,
-
-            blending:
-                THREE.AdditiveBlending
-
-        });
-
-
-    return new THREE.Points(
-        geometry,
-        material
-    );
+    });
 
 }
-
-
-const galaxy =
-    crearGalaxia();
-
-
-galaxyGroup.add(
-    galaxy
-);
-
-
-// ============================================================
-// CORAZÓN
-// ============================================================
-
-function crearCorazon() {
-
-
-    const geometry =
-        new THREE.BufferGeometry();
-
-
-    const positions = [];
-
-    const colors = [];
-
-
-    for (
-        let i = 0;
-        i < 8000;
-        i++
-    ) {
-
-
-        const t =
-            Math.random() *
-            Math.PI *
-            2;
-
-
-        const fill =
-            Math.sqrt(
-                Math.random()
-            );
-
-
-        const scale =
-            .62;
-
-
-        const x =
-
-            16 *
-            Math.pow(
-                Math.sin(t),
-                3
-            ) *
-            fill *
-            scale;
-
-
-        const y =
-
-            (
-
-                13 *
-                Math.cos(t)
-
-                -
-
-                5 *
-                Math.cos(
-                    2 * t
-                )
-
-                -
-
-                2 *
-                Math.cos(
-                    3 * t
-                )
-
-                -
-
-                Math.cos(
-                    4 * t
-                )
-
-            ) *
-            fill *
-            scale;
-
-
-        const z =
-
-            (
-                Math.random()
-                - .5
-            ) *
-            3;
-
-
-        positions.push(
-            x,
-            y,
-            z
-        );
-
-
-        const color =
-            new THREE.Color();
-
-
-        color.setHSL(
-
-            .91 +
-            Math.random() *
-            .08,
-
-            .95,
-
-            .5 +
-            Math.random() *
-            .2
-
-        );
-
-
-        colors.push(
-            color.r,
-            color.g,
-            color.b
-        );
-
-    }
-
-
-    geometry.setAttribute(
-
-        "position",
-
-        new THREE.Float32BufferAttribute(
-            positions,
-            3
-        )
-
-    );
-
-
-    geometry.setAttribute(
-
-        "color",
-
-        new THREE.Float32BufferAttribute(
-            colors,
-            3
-        )
-
-    );
-
-
-    const material =
-        new THREE.PointsMaterial({
-
-            size: .2,
-
-            vertexColors: true,
-
-            transparent: true,
-
-            opacity: 1,
-
-            depthWrite: false,
-
-            blending:
-                THREE.AdditiveBlending
-
-        });
-
-
-    return new THREE.Points(
-        geometry,
-        material
-    );
-
-}
-
-
-const heart =
-    crearCorazon();
-
-
-heart.position.set(
-    0,
-    -1,
-    -5
-);
-
-
-heartGroup.add(
-    heart
-);
 
 
 // ============================================================
@@ -776,190 +265,58 @@ heartGroup.add(
 const palabras = [
 
     "AMOR",
-
     "TERNURA",
-
     "MAGIA",
-
     "PASIÓN",
-
     "ALEGRÍA",
-
     "LUZ",
-
     "DESTINO",
-
     "CASUALIDAD",
-
     "SIEMPRE",
-
     "TÚ Y YO",
-
     "INFINITO",
-
     "FELICIDAD",
-
     "ALMA",
-
     "CONSTELACIÓN"
 
 ];
 
 
-function crearTexto(
-    texto
-) {
-
-
-    const canvas =
-        document.createElement(
-            "canvas"
-        );
-
-
-    canvas.width = 600;
-
-    canvas.height = 160;
-
-
-    const ctx =
-        canvas.getContext(
-            "2d"
-        );
-
-
-    ctx.clearRect(
-        0,
-        0,
-        600,
-        160
-    );
-
-
-    ctx.font =
-        "500 42px Georgia";
-
-
-    ctx.textAlign =
-        "center";
-
-
-    ctx.textBaseline =
-        "middle";
-
-
-    ctx.shadowColor =
-        "#ff36bb";
-
-
-    ctx.shadowBlur =
-        25;
-
-
-    ctx.fillStyle =
-        "rgba(255,215,242,.85)";
-
-
-    ctx.fillText(
-        texto,
-        300,
-        80
-    );
-
-
-    const texture =
-        new THREE.CanvasTexture(
-            canvas
-        );
-
-
-    const material =
-        new THREE.SpriteMaterial({
-
-            map: texture,
-
-            transparent: true,
-
-            depthWrite: false
-
-        });
-
-
-    const sprite =
-        new THREE.Sprite(
-            material
-        );
-
-
-    sprite.scale.set(
-        7,
-        1.9,
-        1
-    );
-
-
-    return sprite;
-
-}
+const palabras3D = [];
 
 
 for (
     let i = 0;
-    i < 45;
+    i < 35;
     i++
 ) {
 
+    palabras3D.push({
 
-    const word =
-        crearTexto(
-
+        texto:
             palabras[
                 Math.floor(
                     Math.random() *
                     palabras.length
                 )
-            ]
+            ],
 
-        );
+        x:
+            Math.random() * ancho,
 
+        y:
+            Math.random() * alto,
 
-    const radius =
-        20 +
-        Math.random() *
-        30;
+        profundidad:
+            Math.random(),
 
+        velocidad:
+            Math.random() * .3 + .1,
 
-    const angle =
-        Math.random() *
-        Math.PI *
-        2;
+        fase:
+            Math.random() * Math.PI * 2
 
-
-    word.position.set(
-
-        Math.cos(angle) *
-        radius,
-
-        (
-            Math.random()
-            - .5
-        ) *
-        25,
-
-        Math.sin(angle) *
-        radius
-
-    );
-
-
-    word.userData.offset =
-        Math.random() *
-        10;
-
-
-    wordsGroup.add(
-        word
-    );
+    });
 
 }
 
@@ -968,318 +325,901 @@ for (
 // FOTOS
 // ============================================================
 
-const photoObjects = [];
+const fotosDOM = [];
+
+function crearFotos() {
+
+    fotosDOM.length = 0;
+
+    document
+        .querySelectorAll(".photo-card")
+        .forEach(
+            elemento => elemento.remove()
+        );
 
 
-function crearFoto(
-    item,
-    index
-) {
+    fotos.forEach(
+        (foto, index) => {
+
+            const tarjeta =
+                document.createElement(
+                    "div"
+                );
+
+            tarjeta.className =
+                "photo-card";
 
 
-    const group =
-        new THREE.Group();
+            const imagen =
+                document.createElement(
+                    "img"
+                );
 
 
-    // ----------------------------------------
-    // FOTO
-    // ----------------------------------------
+            imagen.src =
+                foto.archivo;
 
-    const texture =
-        new THREE.TextureLoader()
-            .load(
-                item.archivo
+
+            imagen.alt =
+                "Foto de Ariana";
+
+
+            imagen.loading =
+                "eager";
+
+
+            tarjeta.appendChild(
+                imagen
             );
 
 
-    const material =
-        new THREE.SpriteMaterial({
-
-            map:
-                texture,
-
-            transparent:
-                true,
-
-            depthWrite:
-                false
-
-        });
+            scene.appendChild(
+                tarjeta
+            );
 
 
-    const photo =
-        new THREE.Sprite(
-            material
-        );
+            const angulo =
+                index *
+                (
+                    Math.PI * 2 /
+                    fotos.length
+                );
 
 
-    photo.scale.set(
-        6,
-        6,
-        1
-    );
+            const radio = 230;
 
 
-    group.add(
-        photo
-    );
+            tarjeta.dataset.x =
+                Math.cos(angulo) *
+                radio;
 
 
-    // ----------------------------------------
-    // BORDE
-    // ----------------------------------------
-
-    const ring =
-        crearAnillo();
+            tarjeta.dataset.y =
+                Math.sin(angulo) *
+                110;
 
 
-    group.add(
-        ring
-    );
+            tarjeta.dataset.z =
+                Math.sin(angulo) *
+                radio;
 
 
-    // ----------------------------------------
-    // POSICIÓN
-    // ----------------------------------------
-
-    const angle =
-
-        index *
-        (
-            Math.PI *
-            2 /
-            fotos.length
-        );
+            tarjeta.dataset.angulo =
+                angulo;
 
 
-    const radius =
-        18;
+            fotosDOM.push(
+                tarjeta
+            );
 
-
-    group.position.set(
-
-        Math.cos(angle) *
-        radius,
-
-        Math.sin(angle) *
-        7,
-
-        Math.sin(angle) *
-        radius
-
-    );
-
-
-    group.userData.base =
-        group.position.clone();
-
-
-    group.userData.angle =
-        angle;
-
-
-    group.userData.frase =
-        item.frase;
-
-
-    group.userData.index =
-        index;
-
-
-    photosGroup.add(
-        group
-    );
-
-
-    photoObjects.push(
-        group
+        }
     );
 
 }
 
 
-function crearAnillo() {
+crearFotos();
 
 
-    const canvas =
-        document.createElement(
-            "canvas"
+// ============================================================
+// ESTILO DINÁMICO
+// ============================================================
+
+function aplicarEstilos3D() {
+
+    const centroX =
+        ancho / 2;
+
+    const centroY =
+        alto / 2;
+
+
+    fotosDOM.forEach(
+        (tarjeta, index) => {
+
+            const x =
+                parseFloat(
+                    tarjeta.dataset.x
+                );
+
+            const y =
+                parseFloat(
+                    tarjeta.dataset.y
+                );
+
+            const z =
+                parseFloat(
+                    tarjeta.dataset.z
+                );
+
+
+            const movimiento =
+                Math.sin(
+                    Date.now() * .0005 +
+                    index
+                ) * 8;
+
+
+            const profundidad =
+                z + 500;
+
+
+            const escala =
+                Math.max(
+                    .55,
+                    Math.min(
+                        1.25,
+                        1 +
+                        z / 1000
+                    )
+                );
+
+
+            const posicionX =
+                centroX +
+                x +
+                objetivoX;
+
+
+            const posicionY =
+                centroY +
+                y +
+                movimiento +
+                objetivoY;
+
+
+            tarjeta.style.transform =
+
+                `translate3d(
+                    ${posicionX}px,
+                    ${posicionY}px,
+                    ${profundidad}px
+                )
+                translate(-50%, -50%)
+                scale(${escala * zoom})
+                rotateY(${rotacionY * .2}deg)
+                rotateX(${rotacionX * .2}deg)`;
+
+
+            tarjeta.style.zIndex =
+                Math.round(
+                    z + 1000
+                );
+
+
+            if (
+                index === indiceActual
+            ) {
+
+                tarjeta.classList.add(
+                    "selected"
+                );
+
+            }
+
+            else {
+
+                tarjeta.classList.remove(
+                    "selected"
+                );
+
+            }
+
+        }
+    );
+
+}
+
+
+// ============================================================
+// CSS NECESARIO PARA LAS FOTOS
+// ============================================================
+
+const estilo =
+    document.createElement("style");
+
+
+estilo.textContent = `
+
+.scene {
+
+    perspective: 1200px;
+
+    overflow: hidden;
+
+    background:
+
+        radial-gradient(
+            circle at center,
+            rgba(100,0,90,.18),
+            transparent 40%
+        ),
+
+        #020106;
+
+}
+
+.galaxy-canvas {
+
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    z-index: 1;
+
+}
+
+.photo-card {
+
+    position: absolute;
+
+    left: 0;
+
+    top: 0;
+
+    width: 150px;
+
+    height: 190px;
+
+    padding: 6px;
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.95),
+            rgba(255,100,200,.7)
+        );
+
+    box-shadow:
+
+        0 0 15px
+        rgba(255,50,200,.7),
+
+        0 0 50px
+        rgba(255,0,180,.35);
+
+    transform-style: preserve-3d;
+
+    transition:
+        box-shadow .5s ease;
+
+    overflow: hidden;
+
+    z-index: 5;
+
+}
+
+.photo-card img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    border-radius: 13px;
+
+    display: block;
+
+}
+
+.photo-card.selected {
+
+    box-shadow:
+
+        0 0 20px
+        #ff3ac0,
+
+        0 0 60px
+        rgba(255,0,190,.8),
+
+        0 0 120px
+        rgba(255,0,150,.35);
+
+}
+
+@media(max-width:600px) {
+
+    .photo-card {
+
+        width: 115px;
+
+        height: 145px;
+
+    }
+
+}
+
+`;
+
+
+document.head.appendChild(
+    estilo
+);
+
+
+// ============================================================
+// CORAZÓN DE PARTÍCULAS
+// ============================================================
+
+function puntoCorazon(t) {
+
+    const x =
+        16 *
+        Math.pow(
+            Math.sin(t),
+            3
         );
 
 
-    canvas.width =
-        512;
+    const y =
+
+        13 *
+        Math.cos(t)
+
+        -
+
+        5 *
+        Math.cos(2 * t)
+
+        -
+
+        2 *
+        Math.cos(3 * t)
+
+        -
+
+        Math.cos(4 * t);
 
 
-    canvas.height =
-        512;
+    return {
+        x,
+        y
+    };
+
+}
 
 
-    const ctx =
-        canvas.getContext(
-            "2d"
+// ============================================================
+// DIBUJAR GALAXIA
+// ============================================================
+
+function dibujar() {
+
+    const tiempo =
+        Date.now() * .001;
+
+
+    ctx.clearRect(
+        0,
+        0,
+        ancho,
+        alto
+    );
+
+
+    // --------------------------------------------
+    // FONDO
+    // --------------------------------------------
+
+    const gradiente =
+        ctx.createRadialGradient(
+
+            ancho / 2,
+            alto / 2,
+            0,
+
+            ancho / 2,
+            alto / 2,
+            Math.max(
+                ancho,
+                alto
+            ) * .7
+
         );
+
+
+    gradiente.addColorStop(
+        0,
+        "rgba(70,0,65,.35)"
+    );
+
+
+    gradiente.addColorStop(
+        .45,
+        "rgba(20,0,30,.25)"
+    );
+
+
+    gradiente.addColorStop(
+        1,
+        "rgba(0,0,0,1)"
+    );
+
+
+    ctx.fillStyle =
+        gradiente;
+
+
+    ctx.fillRect(
+        0,
+        0,
+        ancho,
+        alto
+    );
+
+
+    // --------------------------------------------
+    // ESTRELLAS
+    // --------------------------------------------
+
+    estrellas.forEach(
+        estrella => {
+
+            estrella.y +=
+                estrella.velocidad;
+
+
+            if (
+                estrella.y > alto
+            ) {
+
+                estrella.y = 0;
+
+            }
+
+
+            const parpadeo =
+
+                .45 +
+
+                Math.sin(
+                    tiempo * 2 +
+                    estrella.brillo * 20
+                ) *
+                .35;
+
+
+            ctx.globalAlpha =
+                parpadeo;
+
+
+            ctx.beginPath();
+
+
+            ctx.arc(
+
+                estrella.x,
+
+                estrella.y,
+
+                estrella.tamaño *
+                estrella.z,
+
+                0,
+                Math.PI * 2
+
+            );
+
+
+            ctx.fillStyle =
+                estrella.z > .7
+                    ? "#ffffff"
+                    : "#ff9de4";
+
+
+            ctx.fill();
+
+        }
+    );
+
+
+    ctx.globalAlpha = 1;
+
+
+    // --------------------------------------------
+    // GALAXIA
+    // --------------------------------------------
+
+    const centroX =
+        ancho / 2 +
+        objetivoX * .15;
+
+
+    const centroY =
+        alto / 2 +
+        objetivoY * .15;
+
+
+    particulas.forEach(
+        particula => {
+
+            const angulo =
+
+                particula.angulo +
+                tiempo * .06;
+
+
+            const radio =
+                particula.radio;
+
+
+            const x =
+
+                centroX +
+
+                Math.cos(angulo) *
+                radio *
+                .55;
+
+
+            const y =
+
+                centroY +
+
+                Math.sin(angulo) *
+                radio *
+                .22;
+
+
+            const tamaño =
+
+                particula.tamaño *
+                (
+                    .6 +
+                    particula.radio / 550
+                );
+
+
+            ctx.globalAlpha =
+
+                .2 +
+
+                Math.sin(
+                    tiempo * 2 +
+                    particula.brillo * 10
+                ) *
+                .2;
+
+
+            ctx.beginPath();
+
+
+            ctx.arc(
+
+                x,
+
+                y,
+
+                tamaño,
+
+                0,
+                Math.PI * 2
+
+            );
+
+
+            ctx.fillStyle =
+
+                particula.tono > .5
+                    ? "#ff4fc7"
+                    : "#a97cff";
+
+
+            ctx.fill();
+
+        }
+    );
+
+
+    ctx.globalAlpha = 1;
+
+
+    // --------------------------------------------
+    // CORAZÓN
+    // --------------------------------------------
+
+    const escala =
+        Math.min(
+            ancho,
+            alto
+        ) * .014;
+
+
+    const corazonX =
+        ancho / 2 +
+        objetivoX * .25;
+
+
+    const corazonY =
+        alto / 2 +
+        50 +
+        objetivoY * .25;
+
+
+    for (
+        let i = 0;
+        i < 900;
+        i++
+    ) {
+
+        const t =
+            Math.random() *
+            Math.PI *
+            2;
+
+
+        const punto =
+            puntoCorazon(t);
+
+
+        const dispersión =
+            Math.random() *
+            1.2;
+
+
+        const x =
+
+            corazonX +
+
+            punto.x *
+            escala *
+
+            (
+                1 +
+                dispersión *
+                .08
+            );
+
+
+        const y =
+
+            corazonY -
+
+            punto.y *
+            escala *
+
+            (
+                1 +
+                dispersión *
+                .08
+            );
+
+
+        ctx.globalAlpha =
+
+            .25 +
+            Math.random() *
+            .65;
+
+
+        ctx.beginPath();
+
+
+        ctx.arc(
+
+            x,
+
+            y,
+
+            Math.random() *
+            2.5 +
+
+            .4,
+
+            0,
+            Math.PI * 2
+
+        );
+
+
+        ctx.fillStyle =
+            Math.random() > .25
+                ? "#ff42c4"
+                : "#ffd5f3";
+
+
+        ctx.fill();
+
+    }
+
+
+    ctx.globalAlpha = 1;
+
+
+    // --------------------------------------------
+    // BRILLO CENTRAL
+    // --------------------------------------------
+
+    const brillo =
+        ctx.createRadialGradient(
+
+            corazonX,
+            corazonY,
+            0,
+
+            corazonX,
+            corazonY,
+            180
+
+        );
+
+
+    brillo.addColorStop(
+        0,
+        "rgba(255,30,190,.12)"
+    );
+
+
+    brillo.addColorStop(
+        1,
+        "rgba(255,0,150,0)"
+    );
+
+
+    ctx.fillStyle =
+        brillo;
 
 
     ctx.beginPath();
 
 
     ctx.arc(
-        256,
-        256,
-        235,
+        corazonX,
+        corazonY,
+        180,
         0,
         Math.PI * 2
     );
 
 
-    ctx.lineWidth =
-        18;
+    ctx.fill();
 
 
-    ctx.shadowColor =
-        "#ff00b7";
+    // --------------------------------------------
+    // PALABRAS
+    // --------------------------------------------
+
+    palabras3D.forEach(
+        palabra => {
+
+            palabra.y +=
+                palabra.velocidad;
 
 
-    ctx.shadowBlur =
-        35;
+            if (
+                palabra.y >
+                alto + 50
+            ) {
+
+                palabra.y =
+                    -50;
+
+            }
 
 
-    ctx.strokeStyle =
-        "#ff4dc9";
+            const escalaTexto =
+
+                .5 +
+
+                palabra.profundidad *
+                .8;
 
 
-    ctx.stroke();
+            ctx.globalAlpha =
+
+                .25 +
+
+                palabra.profundidad *
+                .55;
 
 
-    const texture =
-        new THREE.CanvasTexture(
-            canvas
-        );
+            ctx.font =
+
+                `${12 * escalaTexto}px Georgia`;
 
 
-    const material =
-        new THREE.SpriteMaterial({
-
-            map:
-                texture,
-
-            transparent:
-                true,
-
-            depthWrite:
-                false,
-
-            blending:
-                THREE.AdditiveBlending
-
-        });
+            ctx.textAlign =
+                "center";
 
 
-    const ring =
-        new THREE.Sprite(
-            material
-        );
+            ctx.fillStyle =
+                "#ffc5ec";
 
 
-    ring.scale.set(
-        7.2,
-        7.2,
-        1
+            ctx.shadowColor =
+                "#ff20b8";
+
+
+            ctx.shadowBlur =
+                12;
+
+
+            ctx.fillText(
+
+                palabra.texto,
+
+                palabra.x,
+
+                palabra.y +
+                Math.sin(
+                    tiempo +
+                    palabra.fase
+                ) *
+                5
+
+            );
+
+
+            ctx.shadowBlur = 0;
+
+        }
     );
 
 
-    return ring;
+    ctx.globalAlpha = 1;
+
+
+    aplicarEstilos3D();
+
+
+    requestAnimationFrame(
+        dibujar
+    );
 
 }
 
 
-fotos.forEach(
-
-    (
-        item,
-        index
-    ) => {
-
-        crearFoto(
-            item,
-            index
-        );
-
-    }
-
-);
+dibujar();
 
 
 // ============================================================
-// ESTADO
-// ============================================================
-
-let currentPhoto =
-    0;
-
-
-let cinematic =
-    true;
-
-
-let cameraTarget =
-    new THREE.Vector3();
-
-
-let targetZoom =
-    60;
-
-
-let cameraMoving =
-    false;
-
-
-let autoTimer =
-    null;
-
-
-// ============================================================
-// MOSTRAR FOTO
+// MOSTRAR FRASE
 // ============================================================
 
 function mostrarFoto(
-    index,
-    acercar = true
+    numero
 ) {
 
-
-    if (
-        photoObjects.length === 0
-    ) {
-
-        return;
-
-    }
-
-
-    currentPhoto =
+    indiceActual =
 
         (
-            index +
-            photoObjects.length
-        )
-
-        %
-
-        photoObjects.length;
-
-
-    const object =
-        photoObjects[
-            currentPhoto
-        ];
+            numero +
+            fotos.length
+        ) %
+        fotos.length;
 
 
     photoNumber.textContent =
 
         String(
-            currentPhoto + 1
+            indiceActual + 1
         ).padStart(
             2,
             "0"
@@ -1289,16 +1229,12 @@ function mostrarFoto(
     photoTotal.textContent =
 
         String(
-            photoObjects.length
+            fotos.length
         ).padStart(
             2,
             "0"
         );
 
-
-    // ----------------------------------------
-    // FRASE
-    // ----------------------------------------
 
     phrase.classList.remove(
         "show"
@@ -1308,229 +1244,61 @@ function mostrarFoto(
     setTimeout(
         () => {
 
-
             phrase.textContent =
-                object.userData.frase;
+                fotos[
+                    indiceActual
+                ].frase;
 
 
             phrase.classList.add(
                 "show"
             );
 
+        },
+        300
+    );
+
+
+    // --------------------------------------------
+    // ACERCAMIENTO
+    // --------------------------------------------
+
+    zoomObjetivo =
+        1.35;
+
+
+    setTimeout(
+        () => {
+
+            zoomObjetivo =
+                1;
 
         },
-        500
-    );
-
-
-    // ----------------------------------------
-    // CÁMARA
-    // ----------------------------------------
-
-    if (
-        acercar
-    ) {
-
-
-        cameraTarget.copy(
-            object.position
-        );
-
-
-        targetZoom =
-            11;
-
-
-        cameraMoving =
-            true;
-
-    }
-
-}
-
-
-// ============================================================
-// SIGUIENTE
-// ============================================================
-
-nextButton.addEventListener(
-
-    "click",
-
-    () => {
-
-        mostrarFoto(
-            currentPhoto + 1
-        );
-
-        reiniciarAuto();
-
-    }
-
-);
-
-
-// ============================================================
-// ANTERIOR
-// ============================================================
-
-previousButton.addEventListener(
-
-    "click",
-
-    () => {
-
-        mostrarFoto(
-            currentPhoto - 1
-        );
-
-        reiniciarAuto();
-
-    }
-
-);
-
-
-// ============================================================
-// MÚSICA
-// ============================================================
-
-let playing =
-    false;
-
-
-function reproducirMusica() {
-
-
-    music.play()
-
-        .then(
-            () => {
-
-                playing =
-                    true;
-
-                musicButton.textContent =
-                    "❚❚";
-
-                musicDisc.classList.add(
-                    "playing"
-                );
-
-            }
-        )
-
-        .catch(
-            () => {
-
-                console.log(
-                    "El navegador bloqueó el audio."
-                );
-
-            }
-        );
-
-}
-
-
-function pausarMusica() {
-
-
-    music.pause();
-
-    playing =
-        false;
-
-
-    musicButton.textContent =
-        "▶";
-
-
-    musicDisc.classList.remove(
-        "playing"
+        3500
     );
 
 }
 
 
-musicButton.addEventListener(
+// ============================================================
+// ENTRAR
+// ============================================================
 
+enterButton.addEventListener(
     "click",
-
     () => {
-
 
         if (
-            playing
-        ) {
-
-            pausarMusica();
-
-        }
-
-        else {
-
-            reproducirMusica();
-
-        }
-
-    }
-
-);
+            iniciado
+        ) return;
 
 
-// ============================================================
-// CÁMARA
-// ============================================================
-
-cameraButton.addEventListener(
-
-    "click",
-
-    () => {
+        iniciado = true;
 
 
-        cinematic =
-            !cinematic;
+        // ----------------------------------------
+        // OCULTAR INTRO
+        // ----------------------------------------
 
-
-        if (
-            cinematic
-        ) {
-
-            cameraButton.style.opacity =
-                "1";
-
-        }
-
-        else {
-
-            cameraButton.style.opacity =
-                ".45";
-
-        }
-
-    }
-
-);
-
-
-// ============================================================
-// AUTO RECORRIDO
-// ============================================================
-
-function iniciarAuto() {
-
-
-    clearInterval(
-        autoTimer
-    );
-
-
-    autoTimer =
-
-        setInterval(
-            () => {
-
-
-            
+        intro.classList.add(
+   
