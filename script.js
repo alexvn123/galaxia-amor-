@@ -1,21 +1,66 @@
-// ======================================================
-// MI UNIVERSO 3D ❤️
-// ARIANA
-// ======================================================
+// ============================================================
+// MI UNIVERSO
+// PARA ARIANA ❤️
+// ============================================================
 
 
-// ======================================================
+// ============================================================
+// CONFIGURACIÓN
+// ============================================================
+
+const fotos = [
+
+    {
+        archivo: "imagenes/ariana1.jpg",
+        frase: "A veces una casualidad puede cambiarlo todo."
+    },
+
+    {
+        archivo: "imagenes/ariana2.jpg",
+        frase: "De todas las personas, tuve la suerte de encontrarte."
+    },
+
+    {
+        archivo: "imagenes/ariana3.jpg",
+        frase: "Quizás fue destino..."
+    },
+
+    {
+        archivo: "imagenes/ariana4.jpg",
+        frase: "...o quizás la casualidad más bonita."
+    },
+
+    {
+        archivo: "imagenes/ariana5.jpg",
+        frase: "Pero hoy sé que te elegiría una y otra vez."
+    },
+
+    {
+        archivo: "imagenes/ariana6.jpg",
+        frase: "Ariana, tú eres mi universo."
+    }
+
+];
+
+
+// ============================================================
 // ELEMENTOS
-// ======================================================
+// ============================================================
 
 const sceneContainer =
     document.getElementById("scene");
 
-const imageInput =
-    document.getElementById("imageInput");
+const intro =
+    document.getElementById("intro");
 
-const musicInput =
-    document.getElementById("musicInput");
+const interfaceUI =
+    document.getElementById("interface");
+
+const enterButton =
+    document.getElementById("enterButton");
+
+const phrase =
+    document.getElementById("phrase");
 
 const music =
     document.getElementById("music");
@@ -26,36 +71,41 @@ const musicButton =
 const cameraButton =
     document.getElementById("cameraButton");
 
-const zoomButton =
-    document.getElementById("zoomButton");
+const nextButton =
+    document.getElementById("nextButton");
 
-const phraseElement =
-    document.getElementById("phrase");
+const previousButton =
+    document.getElementById("previousButton");
+
+const photoNumber =
+    document.getElementById("photoNumber");
+
+const photoTotal =
+    document.getElementById("photoTotal");
+
+const musicDisc =
+    document.querySelector(".music-disc");
 
 
-// ======================================================
-// ESCENA
-// ======================================================
+// ============================================================
+// THREE.JS
+// ============================================================
 
 const scene =
     new THREE.Scene();
 
 
-// ======================================================
-// CÁMARA
-// ======================================================
-
 const camera =
     new THREE.PerspectiveCamera(
 
-        65,
+        60,
 
         window.innerWidth /
         window.innerHeight,
 
-        0.1,
+        .1,
 
-        3000
+        2000
 
     );
 
@@ -63,13 +113,9 @@ const camera =
 camera.position.set(
     0,
     0,
-    55
+    60
 );
 
-
-// ======================================================
-// RENDER
-// ======================================================
 
 const renderer =
     new THREE.WebGLRenderer({
@@ -95,11 +141,8 @@ renderer.setPixelRatio(
 
 
 renderer.setSize(
-
     window.innerWidth,
-
     window.innerHeight
-
 );
 
 
@@ -108,189 +151,212 @@ sceneContainer.appendChild(
 );
 
 
-// ======================================================
+// ============================================================
 // GRUPOS
-// ======================================================
+// ============================================================
+
+const universe =
+    new THREE.Group();
+
 
 const galaxyGroup =
     new THREE.Group();
 
+
 const heartGroup =
     new THREE.Group();
 
-const wordsGroup =
-    new THREE.Group();
 
 const photosGroup =
     new THREE.Group();
 
 
-scene.add(
-    galaxyGroup
-);
+const wordsGroup =
+    new THREE.Group();
 
-scene.add(
-    heartGroup
-);
 
-scene.add(
+universe.add(
+    galaxyGroup,
+    heartGroup,
+    photosGroup,
     wordsGroup
 );
 
+
 scene.add(
-    photosGroup
+    universe
 );
 
 
-// ======================================================
+// ============================================================
 // ESTRELLAS
-// ======================================================
+// ============================================================
 
-const starGeometry =
-    new THREE.BufferGeometry();
-
-const starPositions = [];
-
-const starColors = [];
+function crearEstrellas() {
 
 
-for (
-    let i = 0;
-    i < 18000;
-    i++
-) {
-
-    const radius =
-        Math.random() *
-        350;
+    const geometry =
+        new THREE.BufferGeometry();
 
 
-    const angle =
-        Math.random() *
-        Math.PI *
-        2;
+    const positions = [];
+
+    const colors = [];
 
 
-    const x =
-        Math.cos(angle) *
-        radius;
+    for (
+        let i = 0;
+        i < 17000;
+        i++
+    ) {
 
 
-    const z =
-        Math.sin(angle) *
-        radius;
+        const radius =
+            40 +
+            Math.random() *
+            300;
 
 
-    const y =
-        (
-            Math.random() -
-            .5
-        ) *
-        150;
+        const theta =
+            Math.random() *
+            Math.PI *
+            2;
 
 
-    starPositions.push(
-        x,
-        y,
-        z
+        const phi =
+            Math.acos(
+                2 *
+                Math.random()
+                - 1
+            );
+
+
+        const x =
+
+            radius *
+            Math.sin(phi) *
+            Math.cos(theta);
+
+
+        const y =
+
+            radius *
+            Math.sin(phi) *
+            Math.sin(theta);
+
+
+        const z =
+
+            radius *
+            Math.cos(phi);
+
+
+        positions.push(
+            x,
+            y,
+            z
+        );
+
+
+        const color =
+            new THREE.Color();
+
+
+        const r =
+            Math.random();
+
+
+        if (
+            r < .7
+        ) {
+
+            color.set(
+                0xffffff
+            );
+
+        }
+
+        else if (
+            r < .88
+        ) {
+
+            color.set(
+                0xff9bdd
+            );
+
+        }
+
+        else {
+
+            color.set(
+                0xa6cfff
+            );
+
+        }
+
+
+        colors.push(
+            color.r,
+            color.g,
+            color.b
+        );
+
+    }
+
+
+    geometry.setAttribute(
+
+        "position",
+
+        new THREE.Float32BufferAttribute(
+            positions,
+            3
+        )
+
     );
 
 
-    const color =
-        new THREE.Color();
+    geometry.setAttribute(
+
+        "color",
+
+        new THREE.Float32BufferAttribute(
+            colors,
+            3
+        )
+
+    );
 
 
-    const r =
-        Math.random();
+    const material =
+        new THREE.PointsMaterial({
+
+            size: .55,
+
+            vertexColors: true,
+
+            transparent: true,
+
+            opacity: .85,
+
+            depthWrite: false,
+
+            blending:
+                THREE.AdditiveBlending
+
+        });
 
 
-    if (r < .65) {
-
-        color.set(
-            0xffffff
-        );
-
-    }
-
-    else if (r < .82) {
-
-        color.set(
-            0xff7ddd
-        );
-
-    }
-
-    else {
-
-        color.set(
-            0x9acaff
-        );
-
-    }
-
-
-    starColors.push(
-        color.r,
-        color.g,
-        color.b
+    return new THREE.Points(
+        geometry,
+        material
     );
 
 }
 
 
-starGeometry.setAttribute(
-
-    "position",
-
-    new THREE.Float32BufferAttribute(
-        starPositions,
-        3
-    )
-
-);
-
-
-starGeometry.setAttribute(
-
-    "color",
-
-    new THREE.Float32BufferAttribute(
-        starColors,
-        3
-    )
-
-);
-
-
-const starMaterial =
-    new THREE.PointsMaterial({
-
-        size:
-            .75,
-
-        vertexColors:
-            true,
-
-        transparent:
-            true,
-
-        opacity:
-            .9,
-
-        blending:
-            THREE.AdditiveBlending
-
-    });
-
-
 const stars =
-    new THREE.Points(
-
-        starGeometry,
-
-        starMaterial
-
-    );
+    crearEstrellas();
 
 
 scene.add(
@@ -298,170 +364,211 @@ scene.add(
 );
 
 
-// ======================================================
-// GALAXIA CENTRAL
-// ======================================================
+// ============================================================
+// GALAXIA
+// ============================================================
 
-const galaxyGeometry =
-    new THREE.BufferGeometry();
-
-const galaxyPositions = [];
-
-const galaxyColors = [];
+function crearGalaxia() {
 
 
-for (
-    let i = 0;
-    i < 15000;
-    i++
-) {
-
-    const radius =
-        Math.random() *
-        60;
+    const geometry =
+        new THREE.BufferGeometry();
 
 
-    const arm =
-        Math.floor(
-            Math.random() *
-            5
-        );
+    const positions = [];
+
+    const colors = [];
 
 
-    const angle =
-
-        radius *
-        .16 +
-
-        arm *
-        (
-            Math.PI *
-            2 /
-            5
-        ) +
-
-        (
-            Math.random() -
-            .5
-        ) *
-        .7;
+    const arms =
+        5;
 
 
-    const x =
-        Math.cos(angle) *
-        radius;
+    for (
+        let i = 0;
+        i < 13000;
+        i++
+    ) {
 
 
-    const z =
-        Math.sin(angle) *
-        radius;
+        const radius =
+            Math.pow(
+                Math.random(),
+                .7
+            ) *
+            70;
 
 
-    const y =
-        (
-            Math.random() -
-            .5
-        ) *
-        (
-            4 +
+        const arm =
+            Math.floor(
+                Math.random() *
+                arms
+            );
+
+
+        const angle =
+
             radius *
-            .07
+            .14
+
+            +
+
+            arm *
+            (
+                Math.PI *
+                2 /
+                arms
+            )
+
+            +
+
+            (
+                Math.random()
+                - .5
+            ) *
+            .65;
+
+
+        const spread =
+            radius *
+            .025;
+
+
+        const x =
+
+            Math.cos(angle) *
+            radius
+
+            +
+
+            (
+                Math.random()
+                - .5
+            ) *
+            spread;
+
+
+        const z =
+
+            Math.sin(angle) *
+            radius
+
+            +
+
+            (
+                Math.random()
+                - .5
+            ) *
+            spread;
+
+
+        const y =
+
+            (
+                Math.random()
+                - .5
+            ) *
+
+            (
+                2 +
+                radius *
+                .04
+            );
+
+
+        positions.push(
+            x,
+            y,
+            z
         );
 
 
-    galaxyPositions.push(
-        x,
-        y,
-        z
+        const color =
+            new THREE.Color();
+
+
+        if (
+            Math.random() >
+            .5
+        ) {
+
+            color.set(
+                0xff4bc5
+            );
+
+        }
+
+        else {
+
+            color.set(
+                0x9c6cff
+            );
+
+        }
+
+
+        colors.push(
+            color.r,
+            color.g,
+            color.b
+        );
+
+    }
+
+
+    geometry.setAttribute(
+
+        "position",
+
+        new THREE.Float32BufferAttribute(
+            positions,
+            3
+        )
+
     );
 
 
-    const color =
-        new THREE.Color();
+    geometry.setAttribute(
+
+        "color",
+
+        new THREE.Float32BufferAttribute(
+            colors,
+            3
+        )
+
+    );
 
 
-    if (
-        Math.random() >
-        .45
-    ) {
+    const material =
+        new THREE.PointsMaterial({
 
-        color.set(
-            0xff56ca
-        );
+            size: .15,
 
-    }
+            vertexColors: true,
 
-    else {
+            transparent: true,
 
-        color.set(
-            0xa76aff
-        );
+            opacity: .75,
 
-    }
+            depthWrite: false,
+
+            blending:
+                THREE.AdditiveBlending
+
+        });
 
 
-    galaxyColors.push(
-        color.r,
-        color.g,
-        color.b
+    return new THREE.Points(
+        geometry,
+        material
     );
 
 }
 
 
-galaxyGeometry.setAttribute(
-
-    "position",
-
-    new THREE.Float32BufferAttribute(
-        galaxyPositions,
-        3
-    )
-
-);
-
-
-galaxyGeometry.setAttribute(
-
-    "color",
-
-    new THREE.Float32BufferAttribute(
-        galaxyColors,
-        3
-    )
-
-);
-
-
-const galaxyMaterial =
-    new THREE.PointsMaterial({
-
-        size:
-            .18,
-
-        vertexColors:
-            true,
-
-        transparent:
-            true,
-
-        opacity:
-            .8,
-
-        blending:
-            THREE.AdditiveBlending
-
-    });
-
-
 const galaxy =
-    new THREE.Points(
-
-        galaxyGeometry,
-
-        galaxyMaterial
-
-    );
+    crearGalaxia();
 
 
 galaxyGroup.add(
@@ -469,182 +576,190 @@ galaxyGroup.add(
 );
 
 
-// ======================================================
-// CORAZÓN DE PARTÍCULAS
-// ======================================================
+// ============================================================
+// CORAZÓN
+// ============================================================
 
-const heartGeometry =
-    new THREE.BufferGeometry();
-
-const heartPositions = [];
-
-const heartColors = [];
+function crearCorazon() {
 
 
-for (
-    let i = 0;
-    i < 7000;
-    i++
-) {
-
-    const t =
-        Math.random() *
-        Math.PI *
-        2;
+    const geometry =
+        new THREE.BufferGeometry();
 
 
-    const fill =
-        Math.sqrt(
-            Math.random()
+    const positions = [];
+
+    const colors = [];
+
+
+    for (
+        let i = 0;
+        i < 8000;
+        i++
+    ) {
+
+
+        const t =
+            Math.random() *
+            Math.PI *
+            2;
+
+
+        const fill =
+            Math.sqrt(
+                Math.random()
+            );
+
+
+        const scale =
+            .62;
+
+
+        const x =
+
+            16 *
+            Math.pow(
+                Math.sin(t),
+                3
+            ) *
+            fill *
+            scale;
+
+
+        const y =
+
+            (
+
+                13 *
+                Math.cos(t)
+
+                -
+
+                5 *
+                Math.cos(
+                    2 * t
+                )
+
+                -
+
+                2 *
+                Math.cos(
+                    3 * t
+                )
+
+                -
+
+                Math.cos(
+                    4 * t
+                )
+
+            ) *
+            fill *
+            scale;
+
+
+        const z =
+
+            (
+                Math.random()
+                - .5
+            ) *
+            3;
+
+
+        positions.push(
+            x,
+            y,
+            z
         );
 
 
-    const scale =
-        .72;
+        const color =
+            new THREE.Color();
 
 
-    const x =
+        color.setHSL(
 
-        16 *
-        Math.pow(
-            Math.sin(t),
+            .91 +
+            Math.random() *
+            .08,
+
+            .95,
+
+            .5 +
+            Math.random() *
+            .2
+
+        );
+
+
+        colors.push(
+            color.r,
+            color.g,
+            color.b
+        );
+
+    }
+
+
+    geometry.setAttribute(
+
+        "position",
+
+        new THREE.Float32BufferAttribute(
+            positions,
             3
-        ) *
-        fill *
-        scale;
-
-
-    const y =
-
-        (
-            13 *
-            Math.cos(t)
-
-            -
-
-            5 *
-            Math.cos(
-                2 * t
-            )
-
-            -
-
-            2 *
-            Math.cos(
-                3 * t
-            )
-
-            -
-
-            Math.cos(
-                4 * t
-            )
-
-        ) *
-        fill *
-        scale;
-
-
-    const z =
-
-        (
-            Math.random() -
-            .5
-        ) *
-        3;
-
-
-    heartPositions.push(
-        x,
-        y,
-        z
-    );
-
-
-    const color =
-        new THREE.Color();
-
-
-    color.setHSL(
-
-        .90 +
-        Math.random() *
-        .08,
-
-        .95,
-
-        .55
+        )
 
     );
 
 
-    heartColors.push(
-        color.r,
-        color.g,
-        color.b
+    geometry.setAttribute(
+
+        "color",
+
+        new THREE.Float32BufferAttribute(
+            colors,
+            3
+        )
+
+    );
+
+
+    const material =
+        new THREE.PointsMaterial({
+
+            size: .2,
+
+            vertexColors: true,
+
+            transparent: true,
+
+            opacity: 1,
+
+            depthWrite: false,
+
+            blending:
+                THREE.AdditiveBlending
+
+        });
+
+
+    return new THREE.Points(
+        geometry,
+        material
     );
 
 }
 
 
-heartGeometry.setAttribute(
-
-    "position",
-
-    new THREE.Float32BufferAttribute(
-        heartPositions,
-        3
-    )
-
-);
-
-
-heartGeometry.setAttribute(
-
-    "color",
-
-    new THREE.Float32BufferAttribute(
-        heartColors,
-        3
-    )
-
-);
-
-
-const heartMaterial =
-    new THREE.PointsMaterial({
-
-        size:
-            .22,
-
-        vertexColors:
-            true,
-
-        transparent:
-            true,
-
-        opacity:
-            1,
-
-        blending:
-            THREE.AdditiveBlending
-
-    });
-
-
 const heart =
-    new THREE.Points(
-
-        heartGeometry,
-
-        heartMaterial
-
-    );
+    crearCorazon();
 
 
 heart.position.set(
     0,
-    2,
+    -1,
     -5
 );
 
@@ -654,49 +769,45 @@ heartGroup.add(
 );
 
 
-// ======================================================
+// ============================================================
 // PALABRAS
-// ======================================================
+// ============================================================
 
-const words = [
+const palabras = [
 
-    "Amor",
+    "AMOR",
 
-    "Pasión",
+    "TERNURA",
 
-    "Alegría",
+    "MAGIA",
 
-    "Ternura",
+    "PASIÓN",
 
-    "Luz",
+    "ALEGRÍA",
 
-    "Magia",
+    "LUZ",
 
-    "Alma",
+    "DESTINO",
 
-    "Infinito",
+    "CASUALIDAD",
 
-    "Siempre",
+    "SIEMPRE",
 
-    "Tú y yo",
+    "TÚ Y YO",
 
-    "Felicidad",
+    "INFINITO",
 
-    "Mi mundo",
+    "FELICIDAD",
 
-    "Destino",
+    "ALMA",
 
-    "Casualidad",
-
-    "Para siempre",
-
-    "Constelación"
+    "CONSTELACIÓN"
 
 ];
 
 
-function createWord(
-    text
+function crearTexto(
+    texto
 ) {
 
 
@@ -706,11 +817,9 @@ function createWord(
         );
 
 
-    canvas.width =
-        512;
+    canvas.width = 600;
 
-    canvas.height =
-        128;
+    canvas.height = 160;
 
 
     const ctx =
@@ -719,8 +828,16 @@ function createWord(
         );
 
 
+    ctx.clearRect(
+        0,
+        0,
+        600,
+        160
+    );
+
+
     ctx.font =
-        "bold 44px Arial";
+        "500 42px Georgia";
 
 
     ctx.textAlign =
@@ -732,22 +849,307 @@ function createWord(
 
 
     ctx.shadowColor =
-        "#ff19ae";
+        "#ff36bb";
 
 
     ctx.shadowBlur =
-        20;
+        25;
 
 
     ctx.fillStyle =
-        "#ffd5f1";
+        "rgba(255,215,242,.85)";
 
 
     ctx.fillText(
-        text,
-        256,
-        64
+        texto,
+        300,
+        80
     );
+
+
+    const texture =
+        new THREE.CanvasTexture(
+            canvas
+        );
+
+
+    const material =
+        new THREE.SpriteMaterial({
+
+            map: texture,
+
+            transparent: true,
+
+            depthWrite: false
+
+        });
+
+
+    const sprite =
+        new THREE.Sprite(
+            material
+        );
+
+
+    sprite.scale.set(
+        7,
+        1.9,
+        1
+    );
+
+
+    return sprite;
+
+}
+
+
+for (
+    let i = 0;
+    i < 45;
+    i++
+) {
+
+
+    const word =
+        crearTexto(
+
+            palabras[
+                Math.floor(
+                    Math.random() *
+                    palabras.length
+                )
+            ]
+
+        );
+
+
+    const radius =
+        20 +
+        Math.random() *
+        30;
+
+
+    const angle =
+        Math.random() *
+        Math.PI *
+        2;
+
+
+    word.position.set(
+
+        Math.cos(angle) *
+        radius,
+
+        (
+            Math.random()
+            - .5
+        ) *
+        25,
+
+        Math.sin(angle) *
+        radius
+
+    );
+
+
+    word.userData.offset =
+        Math.random() *
+        10;
+
+
+    wordsGroup.add(
+        word
+    );
+
+}
+
+
+// ============================================================
+// FOTOS
+// ============================================================
+
+const photoObjects = [];
+
+
+function crearFoto(
+    item,
+    index
+) {
+
+
+    const group =
+        new THREE.Group();
+
+
+    // ----------------------------------------
+    // FOTO
+    // ----------------------------------------
+
+    const texture =
+        new THREE.TextureLoader()
+            .load(
+                item.archivo
+            );
+
+
+    const material =
+        new THREE.SpriteMaterial({
+
+            map:
+                texture,
+
+            transparent:
+                true,
+
+            depthWrite:
+                false
+
+        });
+
+
+    const photo =
+        new THREE.Sprite(
+            material
+        );
+
+
+    photo.scale.set(
+        6,
+        6,
+        1
+    );
+
+
+    group.add(
+        photo
+    );
+
+
+    // ----------------------------------------
+    // BORDE
+    // ----------------------------------------
+
+    const ring =
+        crearAnillo();
+
+
+    group.add(
+        ring
+    );
+
+
+    // ----------------------------------------
+    // POSICIÓN
+    // ----------------------------------------
+
+    const angle =
+
+        index *
+        (
+            Math.PI *
+            2 /
+            fotos.length
+        );
+
+
+    const radius =
+        18;
+
+
+    group.position.set(
+
+        Math.cos(angle) *
+        radius,
+
+        Math.sin(angle) *
+        7,
+
+        Math.sin(angle) *
+        radius
+
+    );
+
+
+    group.userData.base =
+        group.position.clone();
+
+
+    group.userData.angle =
+        angle;
+
+
+    group.userData.frase =
+        item.frase;
+
+
+    group.userData.index =
+        index;
+
+
+    photosGroup.add(
+        group
+    );
+
+
+    photoObjects.push(
+        group
+    );
+
+}
+
+
+function crearAnillo() {
+
+
+    const canvas =
+        document.createElement(
+            "canvas"
+        );
+
+
+    canvas.width =
+        512;
+
+
+    canvas.height =
+        512;
+
+
+    const ctx =
+        canvas.getContext(
+            "2d"
+        );
+
+
+    ctx.beginPath();
+
+
+    ctx.arc(
+        256,
+        256,
+        235,
+        0,
+        Math.PI * 2
+    );
+
+
+    ctx.lineWidth =
+        18;
+
+
+    ctx.shadowColor =
+        "#ff00b7";
+
+
+    ctx.shadowBlur =
+        35;
+
+
+    ctx.strokeStyle =
+        "#ff4dc9";
+
+
+    ctx.stroke();
 
 
     const texture =
@@ -766,614 +1168,84 @@ function createWord(
                 true,
 
             depthWrite:
-                false
+                false,
+
+            blending:
+                THREE.AdditiveBlending
 
         });
 
 
-    const sprite =
+    const ring =
         new THREE.Sprite(
             material
         );
 
 
-    sprite.scale.set(
-        7,
-        1.75,
+    ring.scale.set(
+        7.2,
+        7.2,
         1
     );
 
 
-    return sprite;
+    return ring;
 
 }
 
 
-for (
-    let i = 0;
-    i < 55;
-    i++
-) {
+fotos.forEach(
 
+    (
+        item,
+        index
+    ) => {
 
-    const word =
-        words[
-            Math.floor(
-                Math.random() *
-                words.length
-            )
-        ];
-
-
-    const sprite =
-        createWord(
-            word
+        crearFoto(
+            item,
+            index
         );
 
-
-    sprite.position.set(
-
-        (
-            Math.random() -
-            .5
-        ) * 55,
-
-        (
-            Math.random() -
-            .5
-        ) * 32,
-
-        (
-            Math.random() -
-            .5
-        ) * 35
-
-    );
-
-
-    wordsGroup.add(
-        sprite
-    );
-
-}
-
-
-// ======================================================
-// FOTOS
-// ======================================================
-
-const photoObjects = [];
-
-
-// ======================================================
-// CREAR FOTO CIRCULAR
-// ======================================================
-
-function createPhoto(
-    file
-) {
-
-
-    const url =
-        URL.createObjectURL(
-            file
-        );
-
-
-    const loader =
-        new THREE.TextureLoader();
-
-
-    loader.load(
-
-        url,
-
-        texture => {
-
-
-            // --------------------------------------
-            // GRUPO
-            // --------------------------------------
-
-            const group =
-                new THREE.Group();
-
-
-            // --------------------------------------
-            // FOTO
-            // --------------------------------------
-
-            const material =
-                new THREE.SpriteMaterial({
-
-                    map:
-                        texture,
-
-                    transparent:
-                        true,
-
-                    depthWrite:
-                        false
-
-                });
-
-
-            const photo =
-                new THREE.Sprite(
-                    material
-                );
-
-
-            const ratio =
-                texture.image.width /
-                texture.image.height;
-
-
-            const size =
-                6;
-
-
-            photo.scale.set(
-
-                size,
-
-                size / ratio,
-
-                1
-
-            );
-
-
-            // --------------------------------------
-            // CÍRCULO LUMINOSO
-            // --------------------------------------
-
-            const ringCanvas =
-                document.createElement(
-                    "canvas"
-                );
-
-
-            ringCanvas.width =
-                512;
-
-
-            ringCanvas.height =
-                512;
-
-
-            const ringCtx =
-                ringCanvas.getContext(
-                    "2d"
-                );
-
-
-            ringCtx.clearRect(
-                0,
-                0,
-                512,
-                512
-            );
-
-
-            const center =
-                256;
-
-
-            const gradient =
-                ringCtx.createRadialGradient(
-
-                    center,
-                    center,
-                    180,
-
-                    center,
-                    center,
-                    255
-
-                );
-
-
-            gradient.addColorStop(
-                0,
-                "rgba(255,0,180,0)"
-            );
-
-
-            gradient.addColorStop(
-                .7,
-                "rgba(255,0,180,.2)"
-            );
-
-
-            gradient.addColorStop(
-                .9,
-                "rgba(255,70,210,1)"
-            );
-
-
-            gradient.addColorStop(
-                1,
-                "rgba(150,0,255,0)"
-            );
-
-
-            ringCtx.fillStyle =
-                gradient;
-
-
-            ringCtx.beginPath();
-
-
-            ringCtx.arc(
-
-                center,
-                center,
-
-                245,
-
-                0,
-                Math.PI * 2
-
-            );
-
-
-            ringCtx.fill();
-
-
-            const ringTexture =
-                new THREE.CanvasTexture(
-                    ringCanvas
-                );
-
-
-            const ringMaterial =
-                new THREE.SpriteMaterial({
-
-                    map:
-                        ringTexture,
-
-                    transparent:
-                        true,
-
-                    blending:
-                        THREE.AdditiveBlending,
-
-                    depthWrite:
-                        false
-
-                });
-
-
-            const ring =
-                new THREE.Sprite(
-                    ringMaterial
-                );
-
-
-            ring.scale.set(
-                7.2,
-                7.2,
-                1
-            );
-
-
-            group.add(
-                ring
-            );
-
-
-            group.add(
-                photo
-            );
-
-
-            // --------------------------------------
-            // POSICIÓN
-            // --------------------------------------
-
-            group.position.set(
-
-                (
-                    Math.random() -
-                    .5
-                ) * 30,
-
-                (
-                    Math.random() -
-                    .5
-                ) * 18,
-
-                (
-                    Math.random() -
-                    .5
-                ) * 18
-
-            );
-
-
-            group.userData.basePosition =
-                group.position.clone();
-
-
-            group.userData.index =
-                photoObjects.length;
-
-
-            group.userData.angle =
-                Math.random() *
-                Math.PI *
-                2;
-
-
-            photosGroup.add(
-                group
-            );
-
-
-            photoObjects.push(
-                group
-            );
-
-
-            URL.revokeObjectURL(
-                url
-            );
-
-        }
-
-    );
-
-}
-
-
-// ======================================================
-// CARGAR FOTOS
-// ======================================================
-
-imageInput.addEventListener(
-
-    "change",
-
-    function() {
-
-
-        for (
-            const file
-            of this.files
-        ) {
-
-
-            if (
-                file.type.startsWith(
-                    "image/"
-                )
-            ) {
-
-
-                createPhoto(
-                    file
-                );
-
-            }
-
-        }
-
     }
 
 );
 
 
-// ======================================================
-// MÚSICA
-// ======================================================
+// ============================================================
+// ESTADO
+// ============================================================
 
-musicInput.addEventListener(
-
-    "change",
-
-    function() {
-
-
-        const file =
-            this.files[0];
-
-
-        if (
-            !file
-        ) return;
-
-
-        const url =
-            URL.createObjectURL(
-                file
-            );
-
-
-        music.src =
-            url;
-
-
-        music.play()
-            .then(
-                () => {
-
-                    musicButton.textContent =
-                        "⏸ MÚSICA";
-
-                }
-            )
-            .catch(
-                () => {}
-            );
-
-    }
-
-);
-
-
-// ======================================================
-// CONTROL MÚSICA
-// ======================================================
-
-musicButton.addEventListener(
-
-    "click",
-
-    function() {
-
-
-        if (
-            !music.src
-        ) {
-
-
-            alert(
-                "Selecciona primero tu canción."
-            );
-
-
-            return;
-
-        }
-
-
-        if (
-            music.paused
-        ) {
-
-
-            music.play();
-
-
-            musicButton.textContent =
-                "⏸ MÚSICA";
-
-        }
-
-        else {
-
-
-            music.pause();
-
-
-            musicButton.textContent =
-                "▶ MÚSICA";
-
-        }
-
-    }
-
-);
-
-
-// ======================================================
-// FRASES
-// ======================================================
-
-const phrases = [
-
-    "Ariana ❤️",
-
-    "Entre millones de estrellas, te elegiría a ti.",
-
-    "Tú eres mi estrella favorita. ✨",
-
-    "Quizás fue destino... quizás casualidad.",
-
-    "Pero encontrarte fue mi casualidad favorita. ❤️",
-
-    "Mi universo es más bonito desde que estás tú.",
-
-    "Tú y yo bajo el mismo cielo. 🌌",
-
-    "Si el universo es infinito, imagina lo que siento por ti.",
-
-    "De todas las estrellas, siempre buscaría la tuya.",
-
-    "Para siempre, tú y yo. ❤️"
-
-];
-
-
-let phraseIndex =
+let currentPhoto =
     0;
 
 
-function showPhrase() {
-
-
-    phraseElement.classList.remove(
-        "visible"
-    );
-
-
-    setTimeout(
-        () => {
-
-
-            phraseElement.textContent =
-                phrases[
-                    phraseIndex
-                ];
-
-
-            phraseElement.classList.add(
-                "visible"
-            );
-
-
-            phraseIndex++;
-
-
-            if (
-                phraseIndex >=
-                phrases.length
-            ) {
-
-                phraseIndex =
-                    0;
-
-            }
-
-        },
-        400
-    );
-
-}
-
-
-showPhrase();
-
-
-setInterval(
-    showPhrase,
-    5000
-);
-
-
-// ======================================================
-// CÁMARA CINEMATOGRÁFICA
-// ======================================================
-
-let cinematicCamera =
+let cinematic =
     true;
-
-
-let selectedPhoto =
-    0;
 
 
 let cameraTarget =
     new THREE.Vector3();
 
 
+let targetZoom =
+    60;
+
+
 let cameraMoving =
     false;
 
 
-function focusPhoto(
-    index
+let autoTimer =
+    null;
+
+
+// ============================================================
+// MOSTRAR FOTO
+// ============================================================
+
+function mostrarFoto(
+    index,
+    acercar = true
 ) {
 
 
@@ -1386,98 +1258,255 @@ function focusPhoto(
     }
 
 
-    selectedPhoto =
-        index %
+    currentPhoto =
+
+        (
+            index +
+            photoObjects.length
+        )
+
+        %
+
         photoObjects.length;
 
 
-    const photo =
+    const object =
         photoObjects[
-            selectedPhoto
+            currentPhoto
         ];
 
 
-    cameraMoving =
-        true;
+    photoNumber.textContent =
+
+        String(
+            currentPhoto + 1
+        ).padStart(
+            2,
+            "0"
+        );
 
 
-    cameraTarget.copy(
-        photo.position
+    photoTotal.textContent =
+
+        String(
+            photoObjects.length
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    // ----------------------------------------
+    // FRASE
+    // ----------------------------------------
+
+    phrase.classList.remove(
+        "show"
     );
 
 
-    targetZoom =
-        10;
+    setTimeout(
+        () => {
+
+
+            phrase.textContent =
+                object.userData.frase;
+
+
+            phrase.classList.add(
+                "show"
+            );
+
+
+        },
+        500
+    );
+
+
+    // ----------------------------------------
+    // CÁMARA
+    // ----------------------------------------
+
+    if (
+        acercar
+    ) {
+
+
+        cameraTarget.copy(
+            object.position
+        );
+
+
+        targetZoom =
+            11;
+
+
+        cameraMoving =
+            true;
+
+    }
 
 }
 
 
-// ======================================================
-// BOTÓN CÁMARA
-// ======================================================
+// ============================================================
+// SIGUIENTE
+// ============================================================
+
+nextButton.addEventListener(
+
+    "click",
+
+    () => {
+
+        mostrarFoto(
+            currentPhoto + 1
+        );
+
+        reiniciarAuto();
+
+    }
+
+);
+
+
+// ============================================================
+// ANTERIOR
+// ============================================================
+
+previousButton.addEventListener(
+
+    "click",
+
+    () => {
+
+        mostrarFoto(
+            currentPhoto - 1
+        );
+
+        reiniciarAuto();
+
+    }
+
+);
+
+
+// ============================================================
+// MÚSICA
+// ============================================================
+
+let playing =
+    false;
+
+
+function reproducirMusica() {
+
+
+    music.play()
+
+        .then(
+            () => {
+
+                playing =
+                    true;
+
+                musicButton.textContent =
+                    "❚❚";
+
+                musicDisc.classList.add(
+                    "playing"
+                );
+
+            }
+        )
+
+        .catch(
+            () => {
+
+                console.log(
+                    "El navegador bloqueó el audio."
+                );
+
+            }
+        );
+
+}
+
+
+function pausarMusica() {
+
+
+    music.pause();
+
+    playing =
+        false;
+
+
+    musicButton.textContent =
+        "▶";
+
+
+    musicDisc.classList.remove(
+        "playing"
+    );
+
+}
+
+
+musicButton.addEventListener(
+
+    "click",
+
+    () => {
+
+
+        if (
+            playing
+        ) {
+
+            pausarMusica();
+
+        }
+
+        else {
+
+            reproducirMusica();
+
+        }
+
+    }
+
+);
+
+
+// ============================================================
+// CÁMARA
+// ============================================================
 
 cameraButton.addEventListener(
 
     "click",
 
-    function() {
+    () => {
 
 
-        cinematicCamera =
-            !cinematicCamera;
-
-
-        cameraButton.textContent =
-
-            cinematicCamera
-
-                ? "🎥 CÁMARA"
-
-                : "⏸ CÁMARA";
-
-    }
-
-);
-
-
-// ======================================================
-// ZOOM
-// ======================================================
-
-let targetZoom =
-    55;
-
-
-let currentZoom =
-    55;
-
-
-zoomButton.addEventListener(
-
-    "click",
-
-    function() {
+        cinematic =
+            !cinematic;
 
 
         if (
-            photoObjects.length > 0
+            cinematic
         ) {
 
-
-            focusPhoto(
-                selectedPhoto
-            );
+            cameraButton.style.opacity =
+                "1";
 
         }
 
-
         else {
 
-
-            targetZoom =
-                targetZoom === 55
-                    ? 25
-                    : 55;
+            cameraButton.style.opacity =
+                ".45";
 
         }
 
@@ -1486,32 +1515,22 @@ zoomButton.addEventListener(
 );
 
 
-// ======================================================
-// CONTROL MANUAL
-// ======================================================
+// ============================================================
+// AUTO RECORRIDO
+// ============================================================
 
-let dragging =
-    false;
-
-
-let previousX =
-    0;
+function iniciarAuto() {
 
 
-let previousY =
-    0;
+    clearInterval(
+        autoTimer
+    );
 
 
-renderer.domElement.addEventListener(
+    autoTimer =
 
-    "pointerdown",
-
-    event => {
-
-
-        dragging =
-            true;
+        setInterval(
+            () => {
 
 
-        previousX =
-            event.clien
+            
