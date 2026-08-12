@@ -428,20 +428,15 @@ body {
     white-space:
         nowrap;
 
-    color:
-        rgba(255, 198, 235, .9);
+    color: #ffffff;
 
     font-family:
         Georgia,
         serif;
 
     text-shadow:
-
-        0 0 8px
-        #ff36b8,
-
-        0 0 25px
-        rgba(255, 0, 170, .65);
+        0 0 8px #ffffff,
+        0 0 25px rgba(100, 180, 255, .8);
 
     animation:
         floatMessage
