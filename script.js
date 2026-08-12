@@ -149,7 +149,24 @@ const MENSAJES = [
 
     "A veces el destino tiene nombre.",
 
-    "Y el mío tiene el tuyo."
+    "Y el mío tiene el tuyo.",
+    "🥰",
+    "❤️",
+    "💞",
+    "♥️",
+    "❣️",
+    "💓",
+    "💗",
+    "💞",
+    "💕",
+    "❤️",
+    "❤️",
+    "❤️",
+    "❤️",
+    "❤️",
+    "❤️",
+    "❤️",
+    "❤️",
 
 ];
 
