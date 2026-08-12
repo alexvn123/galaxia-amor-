@@ -1,51 +1,121 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mi Universo de Amor ❤️</title>
-  <link rel="stylesheet" href="style.css">
-  <!-- Librería p5.js MUY ESTABLE, sin errores CORB/CORS -->
-  <script src="https://cdn.jsdelivr.net/npm/p5@1.7.0/lib/p5.min.js"></script>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Mi Universo ❤️</title>
+
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<div id="loader">
-  <h1>✨ Creando un universo para ti ✨</h1>
-  <p>Cargando estrellas y sentimientos...</p>
-</div>
-
-<div id="mensajeInicio">
-  <h2>Mi universo eres tú ❤️</h2>
-  <button id="entrar">Entrar a nuestro Universo ❤️</button>
-</div>
-
-<audio id="musica" loop preload="auto">
-  <source src="assets/audio/Melendi - Destino o Casualidad ft. HaAsh.mp3" type="audio/mpeg">
-  Tu navegador no soporta audio
+    <!-- ESCENA 3D -->
+    <div id="scene"></div>
 
 
-<script src="sketch.js"></script>
+    <!-- INTERFAZ -->
+    <div id="interface">
 
-<script>
-document.getElementById("mensajeInicio").style.display = "none";
+        <div class="title">
 
-window.onload = function(){
-  setTimeout(()=>{
-    loader.style.opacity = "0";
-    setTimeout(()=>{
-      loader.style.display = "none";
-      mensajeInicio.style.display = "flex";
-    }, 1200);
-  }, 2500);
+            <h1>MI UNIVERSO</h1>
 
-  document.getElementById("entrar").onclick = function(){
-    mensajeInicio.style.display = "none";
-    iniciarGalaxia(); // Activa el dibujo
-    musica.play().catch(e=>console.log("Audio activado:",e));
-  };
-};
-</script>
+            <p>
+                PARA ARIANA ❤️
+            </p>
+
+        </div>
+
+
+        <div id="phrase"></div>
+
+
+        <div class="controls">
+
+            <label class="button">
+
+                📸 FOTOS
+
+                <input
+                    id="imageInput"
+                    type="file"
+                    accept="image/*"
+                    multiple>
+
+            </label>
+
+
+            <label class="button">
+
+                🎵 MÚSICA
+
+                <input
+                    id="musicInput"
+                    type="file"
+                    accept="audio/*">
+
+            </label>
+
+
+            <button
+                id="musicButton"
+                class="button">
+
+                ▶ MÚSICA
+
+            </button>
+
+
+            <button
+                id="cameraButton"
+                class="button">
+
+                🎥 CÁMARA
+
+            </button>
+
+
+            <button
+                id="zoomButton"
+                class="button">
+
+                🔭 ZOOM
+
+            </button>
+
+        </div>
+
+
+        <div class="help">
+
+            Arrastra para mirar ·
+            Desliza para explorar ·
+            Usa la rueda para acercarte
+
+        </div>
+
+    </div>
+
+
+    <!-- AUDIO -->
+
+    <audio
+        id="music"
+        loop>
+    </audio>
+
+
+    <!-- THREE.JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r167/three.min.js"></script>
+
+    <!-- NUESTRO CÓDIGO -->
+    <script src="script.js"></script>
 
 </body>
+
 </html>
