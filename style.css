@@ -1,27 +1,412 @@
-*{margin:0; padding:0; box-sizing:border-box;}
-body{overflow:hidden; background:#000511; font-family:'Arial', sans-serif;}
-canvas{position:absolute; top:0; left:0; z-index:2; display:block;}
+* {
 
-#loader{
-  position:absolute; width:100%; height:100%;
-  display:flex; flex-direction:column; justify-content:center; align-items:center;
-  background:radial-gradient(#000511, #000); color:#fff; z-index:100; transition:opacity 1.2s;
-}
-#loader h1{font-size:clamp(26px,5vw,42px); margin-bottom:15px; text-shadow:0 0 15px hotpink;}
-#loader p{font-size:18px; color:#ffb3e6;}
+    box-sizing: border-box;
 
-#mensajeInicio{
-  position:absolute; width:100%; height:100%; display:flex; flex-direction:column;
-  justify-content:center; align-items:center; z-index:99; background:rgba(0,0,10,.4);
-  display:none;
+    margin: 0;
+
+    padding: 0;
+
 }
-#mensajeInicio h2{
-  font-size:clamp(30px,6vw,48px); color:#fff; text-align:center; margin-bottom:50px;
-  text-shadow:0 0 25px hotpink, 0 0 60px #ff4da6; letter-spacing:2px;
+
+
+html,
+body {
+
+    width: 100%;
+
+    height: 100%;
+
+    overflow: hidden;
+
+    background: #020005;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    color: white;
+
 }
-#entrar{
-  padding:20px 50px; font-size:24px; border:none; border-radius:60px; cursor:pointer;
-  background:linear-gradient(45deg, #ff1a8c, #ff66cc, #e600ac); color:white;
-  box-shadow:0 0 30px #ff2e88, inset 0 0 20px rgba(255,255,255,.3); transition:.5s;
+
+
+body {
+
+    position: relative;
+
 }
-#entrar:hover{transform:scale(1.15); box-shadow:0 0 50px #ff2e88, 0 0 80px #ff66cc;}
+
+
+/* ======================================
+   ESCENA
+====================================== */
+
+#scene {
+
+    position: fixed;
+
+    inset: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+}
+
+
+/* ======================================
+   INTERFAZ
+====================================== */
+
+#interface {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 20;
+
+    pointer-events: none;
+
+}
+
+
+/* ======================================
+   TITULO
+====================================== */
+
+.title {
+
+    position: absolute;
+
+    top: 20px;
+
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    text-align: center;
+
+    width: 100%;
+
+}
+
+
+.title h1 {
+
+    font-size:
+        clamp(
+            35px,
+            8vw,
+            85px
+        );
+
+    font-weight: 900;
+
+    letter-spacing:
+        8px;
+
+    color: white;
+
+    text-shadow:
+
+        0 0 8px #ff28b5,
+
+        0 0 25px #ff008c,
+
+        0 0 50px #7d00ff,
+
+        0 0 90px #ff008c;
+
+}
+
+
+.title p {
+
+    margin-top: 4px;
+
+    font-size:
+        clamp(
+            10px,
+            2vw,
+            18px
+        );
+
+    letter-spacing:
+        7px;
+
+    color:
+        #ffc9ec;
+
+    text-shadow:
+
+        0 0 15px
+        #ff29bd;
+
+}
+
+
+/* ======================================
+   FRASES
+====================================== */
+
+#phrase {
+
+    position: absolute;
+
+    top: 72%;
+
+    left: 50%;
+
+    transform:
+        translate(
+            -50%,
+            -50%
+        );
+
+    width:
+        min(
+            90vw,
+            800px
+        );
+
+    text-align: center;
+
+    font-size:
+        clamp(
+            18px,
+            3vw,
+            32px
+        );
+
+    font-weight: bold;
+
+    color: white;
+
+    opacity: 0;
+
+    transition:
+        opacity 1s ease;
+
+    text-shadow:
+
+        0 0 10px
+        #ff3ac1,
+
+        0 0 30px
+        #ff009d,
+
+        0 0 60px
+        #7c00ff;
+
+}
+
+
+#phrase.visible {
+
+    opacity: 1;
+
+}
+
+
+/* ======================================
+   CONTROLES
+====================================== */
+
+.controls {
+
+    position: absolute;
+
+    bottom: 35px;
+
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    width: 95%;
+
+    pointer-events: auto;
+
+}
+
+
+.button {
+
+    border:
+        1px solid
+        rgba(
+            255,
+            255,
+            255,
+            .2
+        );
+
+    border-radius:
+        40px;
+
+    padding:
+        10px 16px;
+
+    color: white;
+
+    background:
+        rgba(
+            25,
+            3,
+            35,
+            .7
+        );
+
+    backdrop-filter:
+        blur(12px);
+
+    cursor: pointer;
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+    box-shadow:
+
+        0 0 15px
+        rgba(
+            255,
+            0,
+            180,
+            .15
+        );
+
+    transition:
+        .25s;
+
+}
+
+
+.button:hover {
+
+    transform:
+        scale(1.07);
+
+    background:
+        rgba(
+            255,
+            25,
+            170,
+            .45
+        );
+
+    box-shadow:
+
+        0 0 30px
+        rgba(
+            255,
+            30,
+            210,
+            .5
+        );
+
+}
+
+
+.button input {
+
+    display: none;
+
+}
+
+
+/* ======================================
+   AYUDA
+====================================== */
+
+.help {
+
+    position: absolute;
+
+    bottom: 8px;
+
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    width: 100%;
+
+    text-align: center;
+
+    font-size: 9px;
+
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            .45
+        );
+
+}
+
+
+/* ======================================
+   CELULAR
+====================================== */
+
+@media(max-width:600px) {
+
+    .title {
+
+        top: 15px;
+
+    }
+
+
+    .title h1 {
+
+        letter-spacing:
+            4px;
+
+    }
+
+
+    .title p {
+
+        letter-spacing:
+            3px;
+
+    }
+
+
+    .controls {
+
+        bottom: 25px;
+
+    }
+
+
+    .button {
+
+        padding:
+            9px 11px;
+
+        font-size: 10px;
+
+    }
+
+
+    .help {
+
+        display: none;
+
+    }
+
+  }
