@@ -117,6 +117,8 @@ const FOTOS = [
 
 const MENSAJES = [
 
+    "kerly 💕"
+
     "Quizás fue destino...",
 
     "o quizás fue casualidad.",
